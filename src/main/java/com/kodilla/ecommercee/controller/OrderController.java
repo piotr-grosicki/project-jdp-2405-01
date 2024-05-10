@@ -5,6 +5,8 @@ import com.kodilla.ecommercee.dto.request.UpdateOrderRequest;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,17 +21,17 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable Long id) {
-        return ResponseEntity.ok(new OrderResponse(id, 2L,3L,9.99, "test status"));
+        return ResponseEntity.ok(new OrderResponse(id, 2L, 3L, new BigDecimal(9.99), "test status"));
     }
 
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
-        return ResponseEntity.ok(new OrderResponse(1L,2L, 3L, 10.99, "created status"));
+        return ResponseEntity.ok(new OrderResponse(1L, 2L, 3L, new BigDecimal(10.99), "created status"));
     }
 
     @PutMapping
     public ResponseEntity<OrderResponse> updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) {
-        return ResponseEntity.ok(new OrderResponse(1L,2L, 3L,11.99, "updated status"));
+        return ResponseEntity.ok(new OrderResponse(1L, 2L, 3L, new BigDecimal(11.99), "updated status"));
     }
 
     @DeleteMapping("/{id}")

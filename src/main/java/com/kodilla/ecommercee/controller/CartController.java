@@ -19,28 +19,28 @@ import java.util.List;
 public class CartController {
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProductFromCart(GetCartRequest getCartRequest) {
+    public ResponseEntity<List<ProductResponse>> getAllProductFromCart(@RequestBody GetCartRequest getCartRequest) {
         return ResponseEntity.ok(List.of(new ProductResponse(1L, "product", "description")));
     }
 
     @PostMapping
-    public ResponseEntity<CartResponse> createCart(CreateCartRequest createCartRequest) {
+    public ResponseEntity<CartResponse> createCart(@RequestBody CreateCartRequest createCartRequest) {
         return ResponseEntity.ok(new CartResponse(createCartRequest.userId(), new ArrayList<>(), null, null));
     }
 
     @PostMapping("/item")
-    public ResponseEntity<CartResponse> addProductToCart(AddProductToCartRequest addProductToCartRequest) {
+    public ResponseEntity<CartResponse> addProductToCart(@RequestBody AddProductToCartRequest addProductToCartRequest) {
         return ResponseEntity.ok(new CartResponse(1L, new ArrayList<>(), addProductToCartRequest.quantity(), addProductToCartRequest.price()));
     }
 
     @PostMapping("/order")
-    public ResponseEntity<OrderResponse> createOrderFromCart(GetCartRequest getCartRequest) {
+    public ResponseEntity<OrderResponse> createOrderFromCart(@RequestBody GetCartRequest getCartRequest) {
         return ResponseEntity.ok(new OrderResponse(1L, getCartRequest.cartId(), 1L, BigDecimal.ZERO, "SEND"));
 
     }
 
     @DeleteMapping
-    public ResponseEntity<ProductResponse> deleteProductFromCart(GetProductFromCartRequest getProductFromCartRequest) {
+    public ResponseEntity<ProductResponse> deleteProductFromCart(@RequestBody GetProductFromCartRequest getProductFromCartRequest) {
         return ResponseEntity.ok(new ProductResponse(getProductFromCartRequest.productId(), "product name", "product description"));
     }
 
