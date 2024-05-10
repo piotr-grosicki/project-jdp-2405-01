@@ -25,12 +25,12 @@ public class GroupController {
 
     @PostMapping
     public ResponseEntity<GroupResponse> createGroup(@RequestBody CreateGroupRequest createGroupRequest) {
-        return ResponseEntity.ok(new GroupResponse(1L, createGroupRequest.name()));
+        return ResponseEntity.ok(new GroupResponse(1L, "Sample group name"));
     }
 
     @PutMapping
     public ResponseEntity<GroupResponse> updateGroup(@RequestBody UpdateGroupRequest updateGroupRequest) {
-        return ResponseEntity.ok(new GroupResponse(updateGroupRequest.id(), updateGroupRequest.name()));
+        return ResponseEntity.ok(new GroupResponse(1L, "Sample group name"));
     }
 
     @DeleteMapping("/{id}")
