@@ -28,7 +28,7 @@ public class CartController {
         return ResponseEntity.ok(new CartResponse(createCartRequest.userId(), new ArrayList<>(), null, null));
     }
 
-    @PostMapping("/item")
+    @PutMapping("/item")
     public ResponseEntity<CartResponse> addProductToCart(@RequestBody AddProductToCartRequest addProductToCartRequest) {
         return ResponseEntity.ok(new CartResponse(1L, new ArrayList<>(), addProductToCartRequest.quantity(), addProductToCartRequest.price()));
     }
@@ -39,7 +39,7 @@ public class CartController {
 
     }
 
-    @DeleteMapping
+    @PutMapping
     public ResponseEntity<ProductResponse> deleteProductFromCart(@RequestBody GetProductFromCartRequest getProductFromCartRequest) {
         return ResponseEntity.ok(new ProductResponse(getProductFromCartRequest.productId(), "product name", "product description"));
     }
