@@ -3,7 +3,7 @@ package com.kodilla.ecommercee.controller;
 import com.kodilla.ecommercee.dto.request.AddProductToCartRequest;
 import com.kodilla.ecommercee.dto.request.CreateCartRequest;
 import com.kodilla.ecommercee.dto.request.GetCartRequest;
-import com.kodilla.ecommercee.dto.request.GetProductFromCartRequest;
+import com.kodilla.ecommercee.dto.request.RemoveProductFromCartRequest;
 import com.kodilla.ecommercee.dto.response.CartResponse;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
 import com.kodilla.ecommercee.dto.response.ProductResponse;
@@ -33,15 +33,15 @@ public class CartController {
         return ResponseEntity.ok(new CartResponse(1L, new ArrayList<>(), addProductToCartRequest.quantity(), addProductToCartRequest.price()));
     }
 
-    @PostMapping("/order")
-    public ResponseEntity<OrderResponse> createOrderFromCart(@RequestBody GetCartRequest getCartRequest) {
-        return ResponseEntity.ok(new OrderResponse(1L, getCartRequest.cartId(), 1L, BigDecimal.ZERO, "SEND"));
+    @PostMapping("/{cartId}")
+    public ResponseEntity<OrderResponse> createOrderFromCart(@PathVariable Long cartId) {
+        return ResponseEntity.ok(new OrderResponse(1L, cartId, 1L, BigDecimal.ZERO, "SEND"));
 
     }
 
-    @PutMapping
-    public ResponseEntity<ProductResponse> deleteProductFromCart(@RequestBody GetProductFromCartRequest getProductFromCartRequest) {
-        return ResponseEntity.ok(new ProductResponse(getProductFromCartRequest.productId(), "product name", "product description"));
+    @DeleteMapping
+    public ResponseEntity<ProductResponse> deleteProductFromCart(@RequestBody RemoveProductFromCartRequest removeProductFromCartRequest) {
+        return ResponseEntity.ok(new ProductResponse(removeProductFromCartRequest.productId(), "product name", "product description"));
     }
 
 }
