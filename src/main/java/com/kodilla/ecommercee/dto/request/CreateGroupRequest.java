@@ -1,4 +1,4 @@
 package com.kodilla.ecommercee.dto.request;
 
-public record CreateGroupRequest() {
+public record CreateGroupRequest(String name) {
 }
