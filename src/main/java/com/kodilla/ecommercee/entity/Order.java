@@ -1,12 +1,14 @@
 package com.kodilla.ecommercee.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ORDERS")
 public class Order {
     @Id
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "USERS_ID", nullable = false)
+    private User user;
 }
