@@ -1,14 +1,14 @@
 package com.kodilla.ecommercee.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,7 +20,7 @@ public class Cart {
     @GeneratedValue
     private Long id;
 
-/*    @Setter
+    @Setter
     @OneToOne
     @JoinColumn(name = "USER_ID",nullable = false)
     private User user;
@@ -32,7 +32,7 @@ public class Cart {
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
-    private List<Product>productList = new ArrayList<>();*/
+    private List<Product> productList = new ArrayList<>();
 
 
     @Column(name = "TOTAL_PRODUCT_PRICE")
