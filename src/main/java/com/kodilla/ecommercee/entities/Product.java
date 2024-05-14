@@ -4,10 +4,25 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "PRODUCTS")
 public class Product {
+
+    @ManyToOne
+    @JoinColumn(name = "GROUP_ID")
+    private Group group;
+
+    @ManyToMany
+    @JoinTable(
+            name = "JOIN_PRODUCT_GROUP",
+            joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")}
+    )
+    private List<Cart> cartList = new ArrayList<>();
 
     @Id
     @NotNull
@@ -20,4 +35,5 @@ public class Product {
 
     @Column(name = "DESCRIPTION")
     private String description;
+
 }
