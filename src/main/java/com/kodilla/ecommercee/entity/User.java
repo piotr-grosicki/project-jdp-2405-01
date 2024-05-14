@@ -9,17 +9,21 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "USERS")
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
     private Long id;
+
     @Column(name = "USERNAME")
     private String username;
+
     @Column(name = "PASSWORD")
     private String password;
+
     @Column(name = "ADDRESS")
     private String address;
 
