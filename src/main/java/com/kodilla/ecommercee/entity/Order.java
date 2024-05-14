@@ -25,7 +25,11 @@ public class Order {
     @Column(name = "ORDER_STATUS")
     private boolean status;
 
-    private Long user;
-    private Long cart;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "CART_ID")
+    private Cart cart;
 }
 
