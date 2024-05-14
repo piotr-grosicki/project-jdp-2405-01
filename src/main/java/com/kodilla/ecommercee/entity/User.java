@@ -14,7 +14,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "USER_ID")
     private Long id;
     @Column(name = "USERNAME")
     private String username;
@@ -28,5 +28,4 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Cart cart;
-
 }

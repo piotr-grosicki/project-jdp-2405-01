@@ -1,13 +1,23 @@
 package com.kodilla.ecommercee.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
 @Entity
 @Table(name = "CARTS")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Cart {
+
     @Id
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CART_ID")
+    private Long id;
+
     @OneToOne
-    @JoinColumn(name = "USERS_ID", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 }
