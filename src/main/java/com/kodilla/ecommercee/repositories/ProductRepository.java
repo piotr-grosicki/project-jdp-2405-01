@@ -1,6 +1,6 @@
 package com.kodilla.ecommercee.repositories;
 
-import com.kodilla.ecommercee.entities.Product;
+import com.kodilla.ecommercee.entity.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
