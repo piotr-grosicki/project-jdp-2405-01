@@ -2,9 +2,14 @@ package com.kodilla.ecommercee.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "PRODUCT_GROUPS")
 public class Group {
@@ -13,4 +18,15 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="GROUP_ID")
     private Long id;
+    @Column(name = "NAME")
+    private String name;
+
+    @OneToMany(
+            targetEntity = Product.class,
+            mappedBy = "group",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER
+    )
+    private List<Product> productList = new ArrayList<>();
 }
+
