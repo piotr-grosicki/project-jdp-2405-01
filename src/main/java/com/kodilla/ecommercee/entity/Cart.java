@@ -31,4 +31,9 @@ public class Cart {
     @OneToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
+
+    public Cart(Long id, User user) {
+        this.id = id;
+        this.user = user;
+    }
 }

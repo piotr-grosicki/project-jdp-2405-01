@@ -32,4 +32,8 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Cart cart;
+
+    public User(Long id) {
+        this.id = id;
+    }
 }

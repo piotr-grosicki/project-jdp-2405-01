@@ -3,8 +3,6 @@ package com.kodilla.ecommercee.entity;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.OrderRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,23 +23,6 @@ public class OrderTestSuite {
     private CartRepository cartRepository;
     @Autowired
     private UserRepository userRepository;
-    private User user;
-    private Cart cart;
-
-    @BeforeEach
-    public void setUp() {
-        user = new User(1L);
-        cart = new Cart(1L);
-
-        userRepository.save(user);
-        cartRepository.save(cart);
-    }
-
-    @AfterEach
-    public void cleanUp() {
-        userRepository.delete(user);
-        cartRepository.delete(cart);
-    }
 
     @Test
     void shouldGetAllOrders() {
@@ -92,8 +73,11 @@ public class OrderTestSuite {
     @Test
     void shouldCreateNewOrder() {
         //Given
+        User user = new User(1L);
+        Cart cart = new Cart(1L, user);
         Order order = new Order(1L, BigDecimal.ONE, "test address", false, user, cart);
-
+        userRepository.save(user);
+        cartRepository.save(cart);
         orderRepository.save(order);
 
         //When
@@ -104,23 +88,32 @@ public class OrderTestSuite {
 
         //Cleanup
         orderRepository.delete(order);
+        userRepository.delete(user);
+        cartRepository.delete(cart);
     }
 
     @Test
     void shouldUpdateOrder() {
         //Given
-        Order order = new Order(1L, BigDecimal.ONE, "test address", false, user, cart);
+        User user = new User(1L);
+        Cart cart = new Cart(1L, user);
+        Order order = new Order(1L, new BigDecimal("99.99"), "test address", false, user, cart);
+        userRepository.save(user);
+        cartRepository.save(cart);
+        orderRepository.save(order);
         order.setShippingAddress("new address");
 
         orderRepository.save(order);
 
         //When
-        Optional<Order> expectedOrder = orderRepository.findById(1L);
+        Optional<Order> expectedOrder = orderRepository.findById(order.getId());
 
         //Then
         assertEquals("new address", expectedOrder.get().getShippingAddress());
 
         //Cleanup
         orderRepository.delete(order);
+        userRepository.delete(user);
+        cartRepository.delete(cart);
     }
 }
