@@ -1,18 +1,16 @@
-package com.kodilla.ecommercee.entities;
+package com.kodilla.ecommercee.entity;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "GROUPS")
+@Table(name = "PRODUCT_GROUPS")
 public class Group {
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="ID", unique = true)
+    @Column(name ="GROUP_ID")
     private Long id;
 }
