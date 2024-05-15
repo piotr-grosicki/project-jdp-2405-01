@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name = "PRODUCTS")
@@ -25,4 +27,9 @@ public class Product {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    @Column(name = "PRICE")
+    private BigDecimal price;
+
+    @Column(name = "Quantity")
+    private BigDecimal quantity;
 }
