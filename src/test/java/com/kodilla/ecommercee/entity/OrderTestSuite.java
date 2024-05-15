@@ -27,43 +27,29 @@ public class OrderTestSuite {
     private UserRepository userRepository;
     private User user;
     private Cart cart;
-    private Cart cart2;
-    private Cart cart3;
-    private Cart cart4;
 
     @BeforeEach
     public void setUp() {
         user = new User(1L);
         cart = new Cart(1L);
-        cart2 = new Cart(2L);
-        cart3 = new Cart(3L);
-        cart4 = new Cart(4L);
 
         userRepository.save(user);
-
         cartRepository.save(cart);
-        cartRepository.save(cart2);
-        cartRepository.save(cart3);
-        cartRepository.save(cart4);
     }
 
     @AfterEach
     public void cleanUp() {
         userRepository.delete(user);
-
         cartRepository.delete(cart);
-        cartRepository.delete(cart2);
-        cartRepository.delete(cart3);
-        cartRepository.delete(cart4);
     }
 
     @Test
     void shouldGetAllOrders() {
         //Given
-        Order order = new Order(1L, BigDecimal.ONE, "test address", false, user, cart);
-        Order order2 = new Order(2L, BigDecimal.ONE, "test address", false, user, cart2);
-        Order order3 = new Order(3L, BigDecimal.ONE, "test address", false, user, cart3);
-        Order order4 = new Order(4L, BigDecimal.ONE, "test address", false, user, cart4);
+        Order order = new Order();
+        Order order2 = new Order();
+        Order order3 = new Order();
+        Order order4 = new Order();
 
         orderRepository.save(order);
         orderRepository.save(order2);
@@ -86,14 +72,14 @@ public class OrderTestSuite {
     @Test
     void shouldGetOneOrder() {
         //Given
-        Order order = new Order(1L, BigDecimal.ONE, "test address", false, user, cart);
-        Order order2 = new Order(2L, BigDecimal.ONE, "test address", false, user, cart2);
+        Order order = new Order();
+        Order order2 = new Order();
 
         orderRepository.save(order);
         orderRepository.save(order2);
 
         //When
-        Optional<Order> expectedOrder = orderRepository.findById(1L);
+        Optional<Order> expectedOrder = orderRepository.findById(order.getId());
 
         //Then
         assertTrue(expectedOrder.isPresent());
@@ -111,7 +97,7 @@ public class OrderTestSuite {
         orderRepository.save(order);
 
         //When
-        Optional<Order> expectedOrder = orderRepository.findById(1L);
+        Optional<Order> expectedOrder = orderRepository.findById(order.getId());
 
         //Then
         assertTrue(expectedOrder.isPresent());
