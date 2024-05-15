@@ -18,11 +18,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
-    @Column(name = "TOTAL_PRICE")
     private BigDecimal totalPrice;
-    @Column(name = "SHIPPING_ADDRESS")
     private String shippingAddress;
-    @Column(name = "ORDER_STATUS")
     private boolean status;
 
     @ManyToOne
@@ -32,4 +29,3 @@ public class Order {
     @JoinColumn(name = "CART_ID")
     private Cart cart;
 }
-

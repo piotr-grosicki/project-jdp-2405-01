@@ -1,11 +1,12 @@
-package com.kodilla.ecommercee.repository;
+package com.kodilla.ecommercee.repositories;
 
-import com.kodilla.ecommercee.entity.User;
+import com.kodilla.ecommercee.entity.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @Transactional
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
+
 }
