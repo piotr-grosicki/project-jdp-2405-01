@@ -1,30 +1,28 @@
 package com.kodilla.ecommercee.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Entity(name = "CARTS")
+@Data
+@Entity
+@Table(name = "CARTS")
 public class Cart {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
 
-    @Setter
     @OneToOne
     @JoinColumn(name = "USER_ID",nullable = false)
     private User user;
 
-    @Setter
     @OneToMany(
             targetEntity = Product.class,
             mappedBy = "cart",
@@ -32,7 +30,6 @@ public class Cart {
             fetch = FetchType.EAGER
     )
     private List<Product> productList = new ArrayList<>();
-
 
     @Column(name = "TOTAL_PRODUCT_PRICE")
     private BigDecimal totalProductPrice;
