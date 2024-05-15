@@ -1,4 +1,4 @@
-package com.kodilla.ecommercee.repositories;
+package com.kodilla.ecommercee.repository;
 
 import com.kodilla.ecommercee.entity.Product;
 import jakarta.transaction.Transactional;
