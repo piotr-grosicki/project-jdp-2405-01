@@ -15,21 +15,21 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false)
     private Long id;
 
-    @Column(name = "USERNAME")
+    @Column(name = "USERNAME", nullable = false)
     private String username;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "ADDRESS")
+    @Column(name = "ADDRESS", nullable = false)
     private String address;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
+    @OneToMany(mappedBy = "user")
+    private List<Cart> carts;
 }

@@ -29,7 +29,7 @@ public class Cart {
     )
     private List<Product> products = new ArrayList<>();
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
