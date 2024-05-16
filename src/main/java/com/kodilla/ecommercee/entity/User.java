@@ -27,7 +27,9 @@ public class User {
     @Column(name = "ADDRESS")
     private String address;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(targetEntity = Order.class,
+            mappedBy = "user",
+            fetch = FetchType.EAGER)
     private List<Order> orders;
 
     @OneToOne(mappedBy = "user")
