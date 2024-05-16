@@ -27,10 +27,10 @@ public class OrderTestSuite {
     @Test
     void shouldGetAllOrders() {
         //Given
-        Order order = new Order();
-        Order order2 = new Order();
-        Order order3 = new Order();
-        Order order4 = new Order();
+        Order order = Order.builder().build();
+        Order order2 = Order.builder().build();
+        Order order3 = Order.builder().build();
+        Order order4 = Order.builder().build();
 
         orderRepository.save(order);
         orderRepository.save(order2);
@@ -53,8 +53,8 @@ public class OrderTestSuite {
     @Test
     void shouldGetOneOrder() {
         //Given
-        Order order = new Order();
-        Order order2 = new Order();
+        Order order = Order.builder().build();
+        Order order2 = Order.builder().build();
 
         orderRepository.save(order);
         orderRepository.save(order2);
@@ -73,9 +73,24 @@ public class OrderTestSuite {
     @Test
     void shouldCreateNewOrder() {
         //Given
-        User user = new User(1L);
-        Cart cart = new Cart(1L, user);
-        Order order = new Order(1L, BigDecimal.ONE, "test address", false, user, cart);
+        User user = User.builder()
+                .id(1L)
+                .build();
+
+        Cart cart = Cart.builder()
+                .id(1L)
+                .user(user)
+                .build();
+
+        Order order = Order.builder()
+                .id(1L)
+                .totalPrice(BigDecimal.ONE)
+                .shippingAddress("test address")
+                .status(false)
+                .user(user)
+                .cart(cart)
+                .build();
+
         userRepository.save(user);
         cartRepository.save(cart);
         orderRepository.save(order);
@@ -95,9 +110,24 @@ public class OrderTestSuite {
     @Test
     void shouldUpdateOrder() {
         //Given
-        User user = new User(1L);
-        Cart cart = new Cart(1L, user);
-        Order order = new Order(1L, new BigDecimal("99.99"), "test address", false, user, cart);
+        User user = User.builder()
+                .id(1L)
+                .build();
+
+        Cart cart = Cart.builder()
+                .id(1L)
+                .user(user)
+                .build();
+
+        Order order = Order.builder()
+                .id(1L)
+                .totalPrice(BigDecimal.ONE)
+                .shippingAddress("test address")
+                .status(false)
+                .user(user)
+                .cart(cart)
+                .build();
+
         userRepository.save(user);
         cartRepository.save(cart);
         orderRepository.save(order);

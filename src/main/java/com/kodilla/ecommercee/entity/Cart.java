@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Table(name = "CARTS")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Cart {
 
     @Id
@@ -27,6 +29,7 @@ public class Cart {
             joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "CART_ID")},
             inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")}
     )
+    @Builder.Default
     private List<Product> products = new ArrayList<>();
 
     @OneToOne
