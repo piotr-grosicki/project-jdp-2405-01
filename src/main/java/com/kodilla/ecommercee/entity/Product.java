@@ -16,7 +16,6 @@ public class Product {
     private Group group;
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_ID", unique = true)
     private Long id;
