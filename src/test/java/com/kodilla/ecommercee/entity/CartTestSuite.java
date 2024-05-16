@@ -119,13 +119,11 @@ public class CartTestSuite {
                 .id(1L)
                 .build();
 
-        Product product = Product.builder()
-                .id(1L)
-                .name("product")
-                .description("product")
-                .price(new BigDecimal("9.99"))
-                .quantity(1)
-                .build();
+        Product product = new Product();
+        product.setName("product");
+        product.setDescription("product");
+        product.setPrice(new BigDecimal("9.99"));
+        product.setQuantity(1);
 
         Cart cart = Cart.builder()
                 .id(1L)
@@ -158,13 +156,11 @@ public class CartTestSuite {
                 .id(1L)
                 .build();
 
-        Product product = Product.builder()
-                .id(1L)
-                .name("product")
-                .description("product")
-                .price(new BigDecimal("9.99"))
-                .quantity(1)
-                .build();
+        Product product = new Product();
+        product.setName("product");
+        product.setDescription("product");
+        product.setPrice(new BigDecimal("9.99"));
+        product.setQuantity(1);
 
         Cart cart = Cart.builder()
                 .id(1L)
