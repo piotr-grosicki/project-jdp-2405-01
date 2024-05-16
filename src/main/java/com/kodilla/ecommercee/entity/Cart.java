@@ -2,7 +2,6 @@ package com.kodilla.ecommercee.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,12 +14,11 @@ import java.util.List;
 @Table(name = "CARTS")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CART_ID")
+    @Column(name = "CART_ID", nullable = false)
     private Long id;
 
     @ManyToMany
@@ -29,11 +27,10 @@ public class Cart {
             joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "CART_ID")},
             inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")}
     )
-    @Builder.Default
     private List<Product> products = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     @Column(name = "TOTAL_PRODUCT_PRICE")
@@ -41,9 +38,11 @@ public class Cart {
 
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
-  
-      public Cart(Long id, User user) {
-        this.id = id;
+
+    public Cart(List<Product> products, User user, BigDecimal totalProductPrice, Boolean isActive) {
+        this.products = products;
         this.user = user;
+        this.totalProductPrice = totalProductPrice;
+        this.isActive = isActive;
     }
 }
