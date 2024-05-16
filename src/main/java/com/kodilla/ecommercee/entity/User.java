@@ -2,9 +2,9 @@ package com.kodilla.ecommercee.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Data
@@ -12,7 +12,6 @@ import java.util.List;
 @Table(name = "USERS")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class User {
 
     @Id
@@ -32,10 +31,16 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
+    @OneToMany(mappedBy = "user")
+    private List<Cart> carts;
 
     public User(Long id) {
         this.id = id;
+    }
+
+    public User(String username, String password, String address) {
+        this.username = username;
+        this.password = password;
+        this.address = address;
     }
 }

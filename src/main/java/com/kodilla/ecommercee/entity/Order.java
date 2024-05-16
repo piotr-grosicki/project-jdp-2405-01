@@ -28,4 +28,12 @@ public class Order {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "CART_ID")
     private Cart cart;
+
+    public Order(BigDecimal totalPrice, String shippingAddress, boolean status, User user, Cart cart) {
+        this.totalPrice = totalPrice;
+        this.shippingAddress = shippingAddress;
+        this.status = status;
+        this.user = user;
+        this.cart = cart;
+    }
 }
