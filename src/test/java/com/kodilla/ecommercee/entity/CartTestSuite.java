@@ -27,12 +27,28 @@ public class CartTestSuite {
     @Test
     void shouldGetAllCarts() {
         //Given
-        User user = new User(1L);
-        Cart cart = new Cart(1L, user);
-        User user2 = new User(2L);
-        Cart cart2 = new Cart(2L, user2);
-        User user3 = new User(3L);
-        Cart cart3 = new Cart(3L, user3);
+        User user = User.builder()
+                .id(1L)
+                .build();
+        User user2 = User.builder()
+                .id(2L)
+                .build();
+        User user3 = User.builder()
+                .id(3L)
+                .build();
+
+        Cart cart = Cart.builder()
+                .id(1L)
+                .user(user)
+                .build();
+        Cart cart2 = Cart.builder()
+                .id(2L)
+                .user(user2)
+                .build();
+        Cart cart3 = Cart.builder()
+                .id(3L)
+                .user(user3)
+                .build();
 
         userRepository.save(user);
         userRepository.save(user2);
@@ -60,10 +76,21 @@ public class CartTestSuite {
     @Test
     void shouldGetOneCart() {
         //Given
-        User user = new User(1L);
-        Cart cart = new Cart(1L, user);
-        User user2 = new User(2L);
-        Cart cart2 = new Cart(2L, user2);
+        User user = User.builder()
+                .id(1L)
+                .build();
+        User user2 = User.builder()
+                .id(2L)
+                .build();
+
+        Cart cart = Cart.builder()
+                .id(1L)
+                .user(user)
+                .build();
+        Cart cart2 = Cart.builder()
+                .id(2L)
+                .user(user2)
+                .build();
 
         userRepository.save(user);
         userRepository.save(user2);
@@ -88,9 +115,25 @@ public class CartTestSuite {
     @Test
     void shouldCreateCart() {
         //Given
-        User user = new User(1L);
-        Product product = new Product(1L, "product", "product", new BigDecimal("9.99"), 1);
-        Cart cart = new Cart(1L, List.of(product), user, new BigDecimal("9.99"), false);
+        User user = User.builder()
+                .id(1L)
+                .build();
+
+        Product product = Product.builder()
+                .id(1L)
+                .name("product")
+                .description("product")
+                .price(new BigDecimal("9.99"))
+                .quantity(1)
+                .build();
+
+        Cart cart = Cart.builder()
+                .id(1L)
+                .products(List.of(product))
+                .user(user)
+                .totalProductPrice(new BigDecimal("9.99"))
+                .isActive(false)
+                .build();
 
         userRepository.save(user);
         productRepository.save(product);
@@ -111,9 +154,25 @@ public class CartTestSuite {
     @Test
     void shouldUpdateCart() {
         //Given
-        User user = new User(1L);
-        Product product = new Product(1L, "product", "product", new BigDecimal("9.99"), 1);
-        Cart cart = new Cart(1L, List.of(product), user, new BigDecimal("9.99"), false);
+        User user = User.builder()
+                .id(1L)
+                .build();
+
+        Product product = Product.builder()
+                .id(1L)
+                .name("product")
+                .description("product")
+                .price(new BigDecimal("9.99"))
+                .quantity(1)
+                .build();
+
+        Cart cart = Cart.builder()
+                .id(1L)
+                .products(List.of(product))
+                .user(user)
+                .totalProductPrice(new BigDecimal("9.99"))
+                .isActive(false)
+                .build();
 
         userRepository.save(user);
         productRepository.save(product);
