@@ -27,9 +27,11 @@ public class User {
     @Column(name = "ADDRESS", nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(targetEntity = Order.class,
+            mappedBy = "user",
+            fetch = FetchType.EAGER)
     private List<Order> orders;
-
+  
     @OneToMany(mappedBy = "user")
     private List<Cart> carts;
 }

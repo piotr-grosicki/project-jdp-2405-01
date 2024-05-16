@@ -38,4 +38,9 @@ public class Cart {
 
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
+  
+      public Cart(Long id, User user) {
+        this.id = id;
+        this.user = user;
+    }
 }
