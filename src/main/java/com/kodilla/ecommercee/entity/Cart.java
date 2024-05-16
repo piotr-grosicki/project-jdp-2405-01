@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,13 @@ public class Cart {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    public Cart(Long id, User user) {
+    @Column(name = "TOTAL_PRODUCT_PRICE")
+    private BigDecimal totalProductPrice;
+
+    @Column(name = "IS_ACTIVE")
+    private Boolean isActive;
+  
+      public Cart(Long id, User user) {
         this.id = id;
         this.user = user;
     }
