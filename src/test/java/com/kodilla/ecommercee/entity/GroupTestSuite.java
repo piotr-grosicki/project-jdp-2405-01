@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.entity;
 
 import com.kodilla.ecommercee.repository.GroupRepository;
 import com.kodilla.ecommercee.repository.ProductRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,10 +21,18 @@ public class GroupTestSuite {
     @Autowired
     private ProductRepository productRepository;
 
+    @AfterEach
+    void cleanup() {
+        groupRepository.deleteAll();
+        productRepository.deleteAll();
+    }
+
     @Test
     void shouldCreateNewGroup() {
         //Given
-        Group group = new Group(1L, "food", new ArrayList<>());
+        Group group = new Group();
+        group.setName("food");
+        group.setProductList( new ArrayList<>());
         groupRepository.save(group);
 
         //When
@@ -34,8 +43,7 @@ public class GroupTestSuite {
         assertEquals("food", expectedGroup.get().getName());
         assertEquals(0, expectedGroup.get().getProductList().size());
 
-        //cleanup
-        groupRepository.delete(group);
+        //Cleanup with @AfterEach
     }
 
     @Test
@@ -57,11 +65,7 @@ public class GroupTestSuite {
         //Then
         assertEquals(4, groupList.size());
 
-        //Cleanup
-        groupRepository.delete(group1);
-        groupRepository.delete(group2);
-        groupRepository.delete(group3);
-        groupRepository.delete(group4);
+        //Cleanup with @AfterEach
     }
 
     @Test
@@ -85,19 +89,16 @@ public class GroupTestSuite {
         assertTrue(expectedGroup.isPresent());
         assertEquals("myGroup", expectedGroup.get().getName());
 
-
-        //Cleanup
-        groupRepository.delete(group1);
-        groupRepository.delete(group2);
-        groupRepository.delete(group3);
-        groupRepository.delete(group4);
+        //Cleanup with @AfterEach
     }
 
 
     @Test
     void shouldUpdateGroup() {
         //Given
-        Group group = new Group(1L, "food", new ArrayList<>());
+        Group group = new Group();
+        group.setName("food");
+        group.setProductList(new ArrayList<>());
         groupRepository.save(group);
 
         Product product1 = new Product();
@@ -121,13 +122,11 @@ public class GroupTestSuite {
         Optional<Group> expectedGroup = groupRepository.findById(group.getId());
 
         //Then
+        assertTrue(expectedGroup.isPresent());
         assertEquals("furniture", expectedGroup.get().getName());
         assertEquals(2, expectedGroup.get().getProductList().size());
 
-        //cleanup
-        productRepository.delete(product1);
-        productRepository.delete(product2);
-        groupRepository.delete(group);
+        //Cleanup with @AfterEach
     }
 
     @Test
@@ -138,22 +137,27 @@ public class GroupTestSuite {
         Group group3 = new Group();
         Group group4 = new Group();
 
+        Product product1 = new Product();
+        product1.setGroup(group2);
+        group2.setProductList(List.of(product1));
+
         groupRepository.save(group1);
         groupRepository.save(group2);
         groupRepository.save(group3);
         groupRepository.save(group4);
+        productRepository.save(product1);
 
         //When
+        product1.setGroup(null);
+        productRepository.save(product1);
         groupRepository.deleteById(group2.getId());
         List<Group> expectedGroupList = groupRepository.findAll();
+        Optional<Product> exceptedProduct = productRepository.findById(product1.getId());
 
         //Then
         assertEquals(3, expectedGroupList.size());
+        assertTrue(exceptedProduct.isPresent());
 
-        //cleanup
-        groupRepository.delete(group1);
-        groupRepository.delete(group2);
-        groupRepository.delete(group3);
-        groupRepository.delete(group4);
+        //Cleanup with @AfterEach
     }
 }
