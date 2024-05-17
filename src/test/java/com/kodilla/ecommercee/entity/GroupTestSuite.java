@@ -138,6 +138,7 @@ public class GroupTestSuite {
         Group group4 = new Group();
 
         Product product1 = new Product();
+        product1.setName("p1");
         product1.setGroup(group2);
         group2.setProductList(List.of(product1));
 

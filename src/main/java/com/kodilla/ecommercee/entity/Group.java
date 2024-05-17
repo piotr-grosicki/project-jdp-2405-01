@@ -25,7 +25,8 @@ public class Group {
             targetEntity = Product.class,
             mappedBy = "group",
             cascade = CascadeType.PERSIST,
-            fetch = FetchType.EAGER
+            fetch = FetchType.EAGER,
+            orphanRemoval = true
     )
     private List<Product> productList = new ArrayList<>();
 }
