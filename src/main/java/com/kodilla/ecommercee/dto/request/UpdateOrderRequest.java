@@ -1,4 +1,6 @@
 package com.kodilla.ecommercee.dto.request;
 
-public record UpdateOrderRequest (Long id, Double totalPrice, String status){
+import java.math.BigDecimal;
+
+public record UpdateOrderRequest (Long id, BigDecimal totalPrice, Boolean status){
 }
