@@ -29,6 +29,9 @@ public class User {
     @Column(name = "ADDRESS")
     private String address;
 
+    @Column(name = "TOKEN")
+    private Integer token;
+
     @OneToMany(targetEntity = Order.class,
             mappedBy = "user",
             fetch = FetchType.EAGER)
