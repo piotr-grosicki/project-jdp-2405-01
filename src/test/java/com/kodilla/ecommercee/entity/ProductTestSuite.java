@@ -32,6 +32,11 @@ public class ProductTestSuite {
         Product product3 = new Product();
         Product product4 = new Product();
 
+        product1.setName("p1");
+        product2.setName("p2");
+        product3.setName("p3");
+        product4.setName("p4");
+
         productRepository.save(product1);
         productRepository.save(product2);
         productRepository.save(product3);
@@ -54,6 +59,7 @@ public class ProductTestSuite {
     void shouldGetOneProduct() {
         //Given
         Product product = new Product();
+        product.setName("p1");
         productRepository.save(product);
 
         //When
@@ -77,7 +83,7 @@ public class ProductTestSuite {
         product.setName("Test Product");
         product.setDescription("Test Description");
         product.setPrice(BigDecimal.TEN);
-        product.setQuantity(BigDecimal.ONE);
+        product.setQuantity(1);
         product.setGroup(group);
         productRepository.save(product);
 
@@ -104,7 +110,7 @@ public class ProductTestSuite {
         product.setName("Test Product");
         product.setDescription("Test Description");
         product.setPrice(BigDecimal.TEN);
-        product.setQuantity(BigDecimal.ONE);
+        product.setQuantity(1);
         product.setGroup(group);
         productRepository.save(product);
 
@@ -134,7 +140,7 @@ public class ProductTestSuite {
         product.setName("Test Product");
         product.setDescription("Test Description");
         product.setPrice(BigDecimal.TEN);
-        product.setQuantity(BigDecimal.ONE);
+        product.setQuantity(1);
         product.setGroup(group);
         productRepository.save(product);
 
