@@ -35,8 +35,7 @@ public class Product {
     @Column(name = "QUANTITY")
     private Integer quantity = 0;
 
-    public Product(Long id, String name, String description, BigDecimal price, Integer quantity) {
-        this.id = id;
+    public Product(String name, String description, BigDecimal price, Integer quantity) {
         this.name = name;
         this.description = description;
         this.price = price;

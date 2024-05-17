@@ -18,16 +18,20 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ORDER_ID", nullable = false)
     private Long id;
+
     @Column(name = "TOTAL_PRICE", nullable = false)
     private BigDecimal totalPrice = BigDecimal.ZERO;
+
     @Column(name = "SHIPPING_ADDRESS", nullable = false)
     private String shippingAddress;
+
     @Column(name = "STATUS", nullable = false)
     private boolean status;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
     @OneToOne
     @JoinColumn(name = "CART_ID")
     private Cart cart;
