@@ -14,7 +14,6 @@ import java.util.List;
 @Table(name = "USERS")
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class User {
 
     @Id
@@ -34,7 +33,7 @@ public class User {
     @OneToMany(targetEntity = Order.class,
             mappedBy = "user",
             fetch = FetchType.EAGER)
-    private List<Order> orders;
+    private List<Order> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<Cart> carts = new ArrayList<>();
