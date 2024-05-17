@@ -1,7 +1,6 @@
 package com.kodilla.ecommercee.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,22 +19,21 @@ public class Product {
     private Group group;
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PRODUCT_ID", unique = true)
+    @Column(name = "PRODUCT_ID", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     @Column(name = "DESCRIPTION")
     private String description;
 
     @Column(name = "PRICE")
-    private BigDecimal price;
+    private BigDecimal price = BigDecimal.ZERO;
 
     @Column(name = "QUANTITY")
-    private Integer quantity;
+    private Integer quantity = 0;
 
     public Product(Long id, String name, String description, BigDecimal price, Integer quantity) {
         this.id = id;
