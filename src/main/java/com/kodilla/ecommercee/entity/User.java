@@ -20,21 +20,25 @@ public class User {
     @Column(name = "USER_ID", nullable = false)
     private Long id;
 
-    @Column(name = "USERNAME")
+    @Column(name = "USERNAME", nullable = false)
     private String username;
 
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @Column(name = "ADDRESS")
+    @Column(name = "ADDRESS", nullable = false)
     private String address;
 
     @OneToMany(targetEntity = Order.class,
             mappedBy = "user",
+            orphanRemoval = true,
             fetch = FetchType.EAGER)
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(targetEntity = Cart.class,
+            orphanRemoval = true,
+            mappedBy = "user",
+            fetch = FetchType.EAGER)
     private List<Cart> carts = new ArrayList<>();
 
     public User(String username, String password, String address) {
