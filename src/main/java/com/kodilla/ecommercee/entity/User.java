@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -15,7 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", nullable = false)
     private Long id;
 
     @Column(name = "USERNAME")
@@ -32,10 +34,12 @@ public class User {
             fetch = FetchType.EAGER)
     private List<Order> orders;
 
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
+    @OneToMany(mappedBy = "user")
+    private List<Cart> carts = new ArrayList<>();
 
-    public User(Long id) {
-        this.id = id;
+    public User(String username, String password, String address) {
+        this.username = username;
+        this.password = password;
+        this.address = address;
     }
 }
