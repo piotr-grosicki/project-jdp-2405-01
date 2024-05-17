@@ -1,4 +1,6 @@
 package com.kodilla.ecommercee.dto.request;
 
-public record CreateOrderRequest (Long cartId, Long userId, Double totalPrice, String status ){
+import java.math.BigDecimal;
+
+public record CreateOrderRequest (Long cartId, Long userId, BigDecimal totalPrice, boolean status ){
 }
