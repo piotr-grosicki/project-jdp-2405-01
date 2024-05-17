@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.entity;
 
 import com.kodilla.ecommercee.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,11 @@ public class UserTestSuite {
     @Autowired
     private UserRepository userRepository;
 
+    @AfterEach
+    public void cleanUp() {
+        userRepository.deleteAll();
+    }
+
     @Test
     void shouldGetAllUsers() {
         //given
@@ -32,11 +38,6 @@ public class UserTestSuite {
 
         //then
         assertEquals(3, users.size());
-
-        //clean up
-        userRepository.delete(user1);
-        userRepository.delete(user2);
-        userRepository.delete(user3);
     }
 
     @Test
@@ -54,10 +55,6 @@ public class UserTestSuite {
         assertThat(expectedUser).isNotNull();
         assertEquals(expectedUser.get().getId(), user1.getId());
         assertNotEquals(expectedUser.get().getId(), user2.getId());
-
-        //clean up
-        userRepository.delete(user1);
-        userRepository.delete(user2);
     }
 
     @Test
@@ -76,10 +73,6 @@ public class UserTestSuite {
 
         //then
         assertEquals(Optional.empty(), expectedUser);
-
-        //clean up
-        userRepository.delete(user1);
-        userRepository.delete(user3);
     }
 
     @Test
@@ -94,9 +87,6 @@ public class UserTestSuite {
         //then
         assertNotNull(user1);
         assertEquals("New username", expectedUser.get().getUsername());
-
-        //clean up
-        userRepository.delete(user1);
     }
 
     @Test
@@ -112,9 +102,6 @@ public class UserTestSuite {
 
         //then
         assertEquals("Updated password", expectedUser.get().getPassword());
-
-        //clean up
-        userRepository.delete(user1);
     }
 
 
