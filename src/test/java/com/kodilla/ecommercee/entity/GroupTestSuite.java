@@ -33,7 +33,8 @@ public class GroupTestSuite {
     @Test
     void shouldCreateNewGroup() {
         //Given
-        Group group = new Group("food", List.of(new Product()));
+        Group group = new Group("food", List.of(new Product("Test Product", "Test Description",
+                new BigDecimal(10), 3, null)));
         groupRepository.save(group);
 
         //When

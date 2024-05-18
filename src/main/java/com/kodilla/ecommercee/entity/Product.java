@@ -8,10 +8,9 @@ import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "PRODUCTS")
-@NoArgsConstructor
-@AllArgsConstructor
 public class Product {
 
     @ManyToOne
