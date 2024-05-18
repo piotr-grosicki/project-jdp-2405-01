@@ -16,16 +16,31 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "ORDER_ID", nullable = false)
     private Long id;
-    private BigDecimal totalPrice;
+
+    @Column(name = "TOTAL_PRICE", nullable = false)
+    private BigDecimal totalPrice = BigDecimal.ZERO;
+
+    @Column(name = "SHIPPING_ADDRESS", nullable = false)
     private String shippingAddress;
+
+    @Column(name = "STATUS", nullable = false)
     private boolean status;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @OneToOne
     @JoinColumn(name = "CART_ID")
     private Cart cart;
+
+    public Order(BigDecimal totalPrice, String shippingAddress, boolean status, User user, Cart cart) {
+        this.totalPrice = totalPrice;
+        this.shippingAddress = shippingAddress;
+        this.status = status;
+        this.user = user;
+        this.cart = cart;
+    }
 }

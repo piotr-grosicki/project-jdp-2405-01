@@ -18,7 +18,7 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CART_ID")
+    @Column(name = "CART_ID", nullable = false)
     private Long id;
 
     @ManyToMany
@@ -29,8 +29,8 @@ public class Cart {
     )
     private List<Product> products = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     @Column(name = "TOTAL_PRODUCT_PRICE")
@@ -38,4 +38,11 @@ public class Cart {
 
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
+
+    public Cart(List<Product> products, User user, BigDecimal totalProductPrice, Boolean isActive) {
+        this.products = products;
+        this.user = user;
+        this.totalProductPrice = totalProductPrice;
+        this.isActive = isActive;
+    }
 }

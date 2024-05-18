@@ -3,12 +3,15 @@ package com.kodilla.ecommercee.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "PRODUCTS")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     @ManyToOne
@@ -17,20 +20,20 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PRODUCT_ID", unique = true)
+    @Column(name = "PRODUCT_ID", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     @Column(name = "DESCRIPTION")
     private String description;
 
     @Column(name = "PRICE")
-    private BigDecimal price;
+    private BigDecimal price = BigDecimal.ZERO;
 
-    @Column(name = "Quantity")
-    private Integer quantity;
+    @Column(name = "QUANTITY")
+    private Integer quantity = 0;
 
     public Product(String name, String description, BigDecimal price, Integer quantity, Group group) {
         this.name = name;

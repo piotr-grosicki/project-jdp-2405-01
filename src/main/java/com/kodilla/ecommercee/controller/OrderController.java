@@ -1,6 +1,5 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.dto.request.CreateOrderRequest;
 import com.kodilla.ecommercee.dto.request.UpdateOrderRequest;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("shop/v1/orders")
+@RequestMapping("shop/v1/order")
 public class OrderController {
 
     @GetMapping
@@ -22,11 +21,6 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable Long id) {
         return ResponseEntity.ok(new OrderResponse(id, 2L, 3L, new BigDecimal("9.99"), "test status"));
-    }
-
-    @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
-        return ResponseEntity.ok(new OrderResponse(1L, 2L, 3L, new BigDecimal("10.99"), "created status"));
     }
 
     @PutMapping
