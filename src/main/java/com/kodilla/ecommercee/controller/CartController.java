@@ -2,7 +2,6 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.request.AddProductToCartRequest;
 import com.kodilla.ecommercee.dto.request.CreateCartRequest;
-import com.kodilla.ecommercee.dto.request.GetCartRequest;
 import com.kodilla.ecommercee.dto.request.RemoveProductFromCartRequest;
 import com.kodilla.ecommercee.dto.response.CartResponse;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
@@ -18,8 +17,8 @@ import java.util.List;
 @RequestMapping("shop/v1/cart")
 public class CartController {
 
-    @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProductFromCart(@RequestBody GetCartRequest getCartRequest) {
+    @GetMapping("{cartId}")
+    public ResponseEntity<List<ProductResponse>> getAllProductsFromCart(@PathVariable Long cartId) {
         return ResponseEntity.ok(List.of(new ProductResponse(1L, "product", "description")));
     }
 
