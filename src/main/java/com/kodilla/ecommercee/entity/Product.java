@@ -1,12 +1,12 @@
 package com.kodilla.ecommercee.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-
+import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "PRODUCTS")
 public class Product {
@@ -30,5 +30,13 @@ public class Product {
     private BigDecimal price;
 
     @Column(name = "Quantity")
-    private BigDecimal quantity;
+    private Integer quantity;
+
+    public Product(String name, String description, BigDecimal price, Integer quantity, Group group) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.group = group;
+    }
 }

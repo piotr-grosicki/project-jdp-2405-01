@@ -2,11 +2,13 @@ package com.kodilla.ecommercee.entity;
 
 import com.kodilla.ecommercee.repository.GroupRepository;
 import com.kodilla.ecommercee.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,25 +25,26 @@ public class GroupTestSuite {
 
     @AfterEach
     void cleanup() {
-        groupRepository.deleteAll();
         productRepository.deleteAll();
+        groupRepository.deleteAll();
     }
 
+    @Transactional
     @Test
     void shouldCreateNewGroup() {
         //Given
-        Group group = new Group();
-        group.setName("food");
-        group.setProductList( new ArrayList<>());
+        Group group = new Group("food", List.of(new Product()));
         groupRepository.save(group);
 
         //When
         Optional<Group> expectedGroup = groupRepository.findById(group.getId());
+        List<Product> expectedProduct = productRepository.findAll();
 
         //Then
         assertTrue(expectedGroup.isPresent());
         assertEquals("food", expectedGroup.get().getName());
-        assertEquals(0, expectedGroup.get().getProductList().size());
+        assertEquals(1, expectedProduct.size());
+        assertEquals(1, expectedGroup.get().getProductList().size());
 
         //Cleanup with @AfterEach
     }
@@ -49,10 +52,10 @@ public class GroupTestSuite {
     @Test
     void shouldGetAllGroups() {
         //Given
-        Group group1 = new Group();
-        Group group2 = new Group();
-        Group group3 = new Group();
-        Group group4 = new Group();
+        Group group1 = new Group("g1", new ArrayList<>());
+        Group group2 = new Group("g2", new ArrayList<>());
+        Group group3 = new Group("g3", new ArrayList<>());
+        Group group4 = new Group("g4", new ArrayList<>());
 
         groupRepository.save(group1);
         groupRepository.save(group2);
@@ -71,11 +74,10 @@ public class GroupTestSuite {
     @Test
     void shouldGetOneGroupById() {
         //Given
-        Group group1 = new Group();
-        Group group2 = new Group();
-        Group group3 = new Group();
-        group3.setName("myGroup");
-        Group group4 = new Group();
+        Group group1 = new Group("g1", new ArrayList<>());
+        Group group2 = new Group("g2", new ArrayList<>());
+        Group group3 = new Group("g3", new ArrayList<>());
+        Group group4 = new Group("g4", new ArrayList<>());
 
         groupRepository.save(group1);
         groupRepository.save(group2);
@@ -87,29 +89,22 @@ public class GroupTestSuite {
 
         //Then
         assertTrue(expectedGroup.isPresent());
-        assertEquals("myGroup", expectedGroup.get().getName());
+        assertEquals("g3", expectedGroup.get().getName());
 
         //Cleanup with @AfterEach
     }
 
-
+    @Transactional
     @Test
     void shouldUpdateGroup() {
         //Given
-        Group group = new Group();
-        group.setName("food");
-        group.setProductList(new ArrayList<>());
+        Group group = new Group("food", new ArrayList<>());
         groupRepository.save(group);
 
-        Product product1 = new Product();
-        product1.setName("Test Product");
-        product1.setDescription("Test Description");
-        product1.setGroup(group);
-
-        Product product2 = new Product();
-        product2.setName("Test Product");
-        product2.setDescription("Test Description");
-        product2.setGroup(group);
+        Product product1 = new Product("Test Product", "Test Description", new BigDecimal(10),
+                3, group);
+        Product product2 = new Product("Test Product", "Test Description", new BigDecimal(10),
+                3, group);
 
         productRepository.save(product1);
         productRepository.save(product2);
@@ -132,32 +127,39 @@ public class GroupTestSuite {
     @Test
     void shouldDeleteGroupById() {
         //Given
-        Group group1 = new Group();
-        Group group2 = new Group();
-        Group group3 = new Group();
-        Group group4 = new Group();
-
-        Product product1 = new Product();
-        product1.setName("p1");
-        product1.setGroup(group2);
-        group2.setProductList(List.of(product1));
+        Group group1 = new Group("g1", new ArrayList<>());
+        Group group2 = new Group("g2", new ArrayList<>());
+        Group group3 = new Group("g3", new ArrayList<>());
+        Group group4 = new Group("g4", new ArrayList<>());
 
         groupRepository.save(group1);
         groupRepository.save(group2);
         groupRepository.save(group3);
         groupRepository.save(group4);
+
+        Product product1 = new Product("Test Product", "Test Description", new BigDecimal(10),
+                3, group1);
+        Product product2 = new Product("Test Product2", "Test Description2", new BigDecimal(15),
+                3, group2);
+
         productRepository.save(product1);
+        productRepository.save(product2);
+
 
         //When
-        product1.setGroup(null);
-        productRepository.save(product1);
+        try {
+            groupRepository.deleteById(group2.getId());
+        } catch (Exception e) {}
+        List<Group> expectedGroupListAfterUnssucessfulDelete = groupRepository.findAll();
+
+        product2.setGroup(null);
+        productRepository.save(product2);
         groupRepository.deleteById(group2.getId());
-        List<Group> expectedGroupList = groupRepository.findAll();
-        Optional<Product> exceptedProduct = productRepository.findById(product1.getId());
+        List<Group> expectedGroupListAfterDelete = groupRepository.findAll();
 
         //Then
-        assertEquals(3, expectedGroupList.size());
-        assertTrue(exceptedProduct.isPresent());
+        assertEquals(4, expectedGroupListAfterUnssucessfulDelete.size());
+        assertEquals(3, expectedGroupListAfterDelete.size());
 
         //Cleanup with @AfterEach
     }
