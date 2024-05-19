@@ -7,6 +7,7 @@ import com.kodilla.ecommercee.dto.response.ProductResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,21 +22,21 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getProduct(@PathVariable Long id) {
-        return ResponseEntity.ok(new ProductResponse(id, "sample product name", "sample product description"));
+        return ResponseEntity.ok(new ProductResponse(id, "sample product name", "sample product description", BigDecimal.ZERO, 0));
     }
 
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest createProductRequest) {
-        return ResponseEntity.ok(new ProductResponse(2L, "created new product", "new product description"));
+        return ResponseEntity.ok(new ProductResponse(2L, "created new product", "new product description", BigDecimal.ZERO, 0));
     }
 
     @PutMapping
     public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest updateProductRequest) {
-        return ResponseEntity.ok(new ProductResponse(2L, "updated product", "updated description"));
+        return ResponseEntity.ok(new ProductResponse(2L, "updated product", "updated description", BigDecimal.ZERO, 0));
     }
 
     @DeleteMapping
     public ResponseEntity<ProductResponse> deleteProduct(@RequestBody DeleteProductRequest deleteProductRequest) {
-        return ResponseEntity.ok(new ProductResponse(2L, "deleting product", "deleting description"));
+        return ResponseEntity.ok(new ProductResponse(2L, "deleting product", "deleting description", BigDecimal.ZERO, 0));
     }
 }

@@ -19,7 +19,7 @@ public class CartController {
 
     @GetMapping("{cartId}")
     public ResponseEntity<List<ProductResponse>> getAllProductsFromCart(@PathVariable Long cartId) {
-        return ResponseEntity.ok(List.of(new ProductResponse(1L, "product", "description")));
+        return ResponseEntity.ok(List.of(new ProductResponse(1L, "product", "description", BigDecimal.ZERO, 0)));
     }
 
     @PostMapping
@@ -40,7 +40,7 @@ public class CartController {
 
     @DeleteMapping
     public ResponseEntity<ProductResponse> deleteProductFromCart(@RequestBody RemoveProductFromCartRequest removeProductFromCartRequest) {
-        return ResponseEntity.ok(new ProductResponse(removeProductFromCartRequest.productId(), "product name", "product description"));
+        return ResponseEntity.ok(new ProductResponse(removeProductFromCartRequest.productId(), "product name", "product description", BigDecimal.ZERO, 0));
     }
 
 }

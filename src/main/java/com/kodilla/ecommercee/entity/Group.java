@@ -30,5 +30,9 @@ public class Group {
             orphanRemoval = true
     )
     private List<Product> productList = new ArrayList<>();
+
+    public Group(String name) {
+        this.name = name;
+    }
 }
 
