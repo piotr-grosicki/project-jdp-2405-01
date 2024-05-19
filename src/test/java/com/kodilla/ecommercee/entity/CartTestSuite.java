@@ -129,7 +129,7 @@ public class CartTestSuite {
     void shouldDeleteCart() {
         //Given
         User user = new User("test", "test", "test");
-        Product product = new Product("test", "test", new BigDecimal("1.50"), 2, null);
+        Product product = new Product("test", "test", new BigDecimal("1.50"), 2);
         Cart cart = new Cart(List.of(product), user, new BigDecimal("9.99"), false);
 
         userRepository.save(user);

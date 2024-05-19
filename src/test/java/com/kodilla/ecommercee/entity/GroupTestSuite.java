@@ -34,7 +34,7 @@ public class GroupTestSuite {
     void shouldCreateNewGroup() {
         //Given
         Group group = new Group("food", List.of(new Product("Test Product", "Test Description",
-                new BigDecimal(10), 3, null)));
+                new BigDecimal(10), 3)));
         groupRepository.save(group);
 
         //When
@@ -150,8 +150,8 @@ public class GroupTestSuite {
         //When
         try {
             groupRepository.deleteById(group2.getId());
-        } catch (Exception e) {}
-        List<Group> expectedGroupListAfterUnssucessfulDelete = groupRepository.findAll();
+        } catch (Exception ignored) {}
+        List<Group> expectedGroupListAfterUnsuccessfulDelete = groupRepository.findAll();
 
         product2.setGroup(null);
         productRepository.save(product2);
@@ -159,7 +159,7 @@ public class GroupTestSuite {
         List<Group> expectedGroupListAfterDelete = groupRepository.findAll();
 
         //Then
-        assertEquals(4, expectedGroupListAfterUnssucessfulDelete.size());
+        assertEquals(4, expectedGroupListAfterUnsuccessfulDelete.size());
         assertEquals(3, expectedGroupListAfterDelete.size());
 
         //Cleanup with @AfterEach

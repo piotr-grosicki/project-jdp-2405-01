@@ -34,6 +34,13 @@ public class Product {
     @Column(name = "QUANTITY")
     private Integer quantity = 0;
 
+    public Product(String name, String description, BigDecimal price, Integer quantity) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
     public Product(String name, String description, BigDecimal price, Integer quantity, Group group) {
         this.name = name;
         this.description = description;
