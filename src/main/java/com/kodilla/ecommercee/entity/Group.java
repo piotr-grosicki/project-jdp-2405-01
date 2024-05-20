@@ -31,7 +31,7 @@ public class Group {
     public Group(String name) {
         this.name = name;
     }
-}
+
 
     public Group(String name, List<Product> productList) {
         this.name = name;
