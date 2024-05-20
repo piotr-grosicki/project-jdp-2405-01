@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -44,5 +45,9 @@ public class Cart {
         this.user = user;
         this.totalProductPrice = totalProductPrice;
         this.isActive = isActive;
+    }
+
+    public Cart(User user) {
+        this.user = user;
     }
 }
