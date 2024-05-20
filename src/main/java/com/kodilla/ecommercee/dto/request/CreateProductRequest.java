@@ -1,4 +1,7 @@
 package com.kodilla.ecommercee.dto.request;
 
-public record CreateProductRequest(String name, String description) {
+import com.kodilla.ecommercee.entity.Group;
+import java.math.BigDecimal;
+
+public record CreateProductRequest(String name, String description, BigDecimal price, Integer quantity, Group group) {
 }
