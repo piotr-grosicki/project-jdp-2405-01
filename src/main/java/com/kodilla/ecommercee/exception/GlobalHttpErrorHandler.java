@@ -11,11 +11,11 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(GroupHasProductsException.class)
     public ResponseEntity<Object> handleGroupHasProductsException(GroupHasProductsException groupHasProductsException) {
-        return new ResponseEntity<>("Group cannot be deleted. Group still have products.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(groupHasProductsException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(GroupNotFoundException.class)
     public ResponseEntity<Object> handleGroupNotFoundException(GroupNotFoundException groupNotFoundException) {
-        return new ResponseEntity<>("Group with given id not found.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(groupNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
