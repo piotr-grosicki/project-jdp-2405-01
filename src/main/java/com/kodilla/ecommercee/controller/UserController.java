@@ -6,10 +6,7 @@ import com.kodilla.ecommercee.dto.request.UserCredentialsRequest;
 import com.kodilla.ecommercee.dto.request.UpdateUserRequest;
 import com.kodilla.ecommercee.dto.response.UserResponse;
 import com.kodilla.ecommercee.dto.response.UserLockedResponse;
-import com.kodilla.ecommercee.exception.InvalidCredentialsException;
-import com.kodilla.ecommercee.exception.NullValueException;
-import com.kodilla.ecommercee.exception.UserNotFoundException;
-import com.kodilla.ecommercee.exception.UsernameAlreadyExistsException;
+import com.kodilla.ecommercee.exception.*;
 import com.kodilla.ecommercee.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public Integer loginUser(@RequestBody UserCredentialsRequest userCredentialsRequest) throws UserNotFoundException, InvalidCredentialsException {
+    public Integer loginUser(@RequestBody UserCredentialsRequest userCredentialsRequest) throws InvalidCredentialsException, UsernameNotFoundException {
         return userService.loginUser(userCredentialsRequest);
     }
 

@@ -7,10 +7,7 @@ import com.kodilla.ecommercee.dto.request.UserCredentialsRequest;
 import com.kodilla.ecommercee.dto.response.UserLockedResponse;
 import com.kodilla.ecommercee.dto.response.UserResponse;
 import com.kodilla.ecommercee.entity.User;
-import com.kodilla.ecommercee.exception.InvalidCredentialsException;
-import com.kodilla.ecommercee.exception.NullValueException;
-import com.kodilla.ecommercee.exception.UserNotFoundException;
-import com.kodilla.ecommercee.exception.UsernameAlreadyExistsException;
+import com.kodilla.ecommercee.exception.*;
 import com.kodilla.ecommercee.mapper.UserMapper;
 import com.kodilla.ecommercee.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -36,18 +33,18 @@ public class UserService {
     }
 
     public UserResponse getUser(Long userId) throws UserNotFoundException {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(String.format("User with id: %s not found", userId)));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         return userMapper.toUserResponse(user);
     }
 
     public UserResponse createUser(CreateUserRequest createUserRequest) throws NullValueException, UsernameAlreadyExistsException {
         if (userRepository.findUserByUsername(createUserRequest.username()).isPresent()) {
-            throw new UsernameAlreadyExistsException(String.format("User with username: %s already exists", createUserRequest.username()));
+            throw new UsernameAlreadyExistsException(createUserRequest.username());
         }
 
         if (createUserRequest.username() == null || createUserRequest.password() == null || createUserRequest.address() == null) {
-            throw new NullValueException("username, password or address is null");
+            throw new NullValueException();
         }
         User newUser = new User(createUserRequest.username(), createUserRequest.password(), createUserRequest.address());
         newUser.setUserLocked(false);
@@ -58,19 +55,15 @@ public class UserService {
     }
 
     public UserResponse updateUser(UpdateUserRequest updateUserRequest) throws UserNotFoundException, UsernameAlreadyExistsException {
-        User user = userRepository.findById(updateUserRequest.id()).orElseThrow(() -> new UserNotFoundException(String.format("User with id: %s not found", updateUserRequest.id())));
+        User user = userRepository.findById(updateUserRequest.id()).orElseThrow(() -> new UserNotFoundException(updateUserRequest.id()));
         boolean isUpdated = false;
 
-        if (
-                updateUserRequest.username() != null &&
-                !updateUserRequest.username().isEmpty() &&
-                !updateUserRequest.username().equals(user.getUsername()) &&
-                !userRepository.findUserByUsername(updateUserRequest.username()).isPresent()
-        ) {
+        if (updateUserRequest.username() != null && !updateUserRequest.username().isEmpty() && !updateUserRequest.username().equals(user.getUsername())) {
+            if (userRepository.findUserByUsername(updateUserRequest.username()).isPresent()) {
+                throw new UsernameAlreadyExistsException(updateUserRequest.username());
+            }
             user.setUsername(updateUserRequest.username());
             isUpdated = true;
-        } else {
-            throw new UsernameAlreadyExistsException(String.format("User with username: %s already exists", updateUserRequest.username()));
         }
 
         if (updateUserRequest.password() != null && !updateUserRequest.password().isEmpty() && !updateUserRequest.password().equals(user.getPassword())) {
@@ -90,14 +83,14 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-    public void deleteUser(Long id) throws UserNotFoundException {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(String.format("User with id: %s not found", id)));
+    public void deleteUser(Long userId) throws UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         userRepository.delete(user);
     }
 
     public UserLockedResponse lockUser(LockUserRequest lockUserRequest) throws UserNotFoundException {
-        User user = userRepository.findById(lockUserRequest.userId()).orElseThrow(() -> new UserNotFoundException(String.format("User with id: %s not found", lockUserRequest)));
+        User user = userRepository.findById(lockUserRequest.userId()).orElseThrow(() -> new UserNotFoundException(lockUserRequest.userId()));
 
         if (lockUserRequest.username() != null && !lockUserRequest.username().isEmpty() && user.getUsername().equals(lockUserRequest.username()) &&
                 lockUserRequest.password() != null && !lockUserRequest.password().isEmpty() && user.getPassword().equals(lockUserRequest.password())
@@ -110,9 +103,9 @@ public class UserService {
         return userMapper.mapToUserLockedResponse(user);
     }
 
-    public Integer loginUser(UserCredentialsRequest userCredentialsRequest) throws UserNotFoundException, InvalidCredentialsException {
+    public Integer loginUser(UserCredentialsRequest userCredentialsRequest) throws InvalidCredentialsException, UsernameNotFoundException {
 
-        User user = userRepository.findUserByUsername(userCredentialsRequest.username()).orElseThrow(() -> new UserNotFoundException(String.format("User with username: %s not found", userCredentialsRequest.username())));
+        User user = userRepository.findUserByUsername(userCredentialsRequest.username()).orElseThrow(() -> new UsernameNotFoundException(userCredentialsRequest.username()));
         SecureRandom random = new SecureRandom();
         int min = 1000000;
         int max = 2000000;
@@ -123,7 +116,7 @@ public class UserService {
             user.setTokenCreationTime(LocalDateTime.now());
             userRepository.save(user);
         } else {
-            throw new InvalidCredentialsException("Invalid credentials");
+            throw new InvalidCredentialsException();
         }
         return token;
     }

@@ -29,4 +29,9 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>("User could not be found.", HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException) {
+        return new ResponseEntity<>("Username could not be found", HttpStatus.BAD_REQUEST);
+    }
+
 }
