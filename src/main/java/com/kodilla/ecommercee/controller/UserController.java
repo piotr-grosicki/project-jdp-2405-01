@@ -7,7 +7,9 @@ import com.kodilla.ecommercee.dto.request.UpdateUserRequest;
 import com.kodilla.ecommercee.dto.response.UserResponse;
 import com.kodilla.ecommercee.dto.response.UserLockedResponse;
 import com.kodilla.ecommercee.exception.InvalidCredentialsException;
+import com.kodilla.ecommercee.exception.NullValueException;
 import com.kodilla.ecommercee.exception.UserNotFoundException;
+import com.kodilla.ecommercee.exception.UsernameAlreadyExistsException;
 import com.kodilla.ecommercee.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) {
+    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) throws NullValueException, UsernameAlreadyExistsException {
         return ResponseEntity.ok(userService.createUser(createUserRequest));
     }
 
@@ -43,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserRequest updateUserRequest) throws UserNotFoundException {
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserRequest updateUserRequest) throws UserNotFoundException, UsernameAlreadyExistsException {
         return ResponseEntity.ok(userService.updateUser(updateUserRequest));
     }
 
