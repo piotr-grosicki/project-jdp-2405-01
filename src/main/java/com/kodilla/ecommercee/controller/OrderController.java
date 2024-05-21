@@ -3,8 +3,6 @@ package com.kodilla.ecommercee.controller;
 import com.kodilla.ecommercee.dto.request.CreateOrderRequest;
 import com.kodilla.ecommercee.dto.request.UpdateOrderRequest;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
-import com.kodilla.ecommercee.entity.Order;
-import com.kodilla.ecommercee.exception.OrderNotFoundException;
 import com.kodilla.ecommercee.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,48 +22,32 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<Order> getAllOrders() {
-        return service.getAllOrders();
+    public ResponseEntity<List<OrderResponse>> getAllOrders() {
+        List<OrderResponse> orders = service.getAllOrders();
+        return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable Long id) {
-        try {
-            OrderResponse orderResponse = service.getOrder(id);
-            return ResponseEntity.ok(orderResponse);
-        } catch (OrderNotFoundException e) {
-            return ResponseEntity.status(404).body(null);
-        }
+        OrderResponse orderResponse = service.getOrder(id);
+        return ResponseEntity.ok(orderResponse);
     }
 
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
-        try {
-            OrderResponse orderResponse = service.createOrder(createOrderRequest);
-            return ResponseEntity.status(201).body(orderResponse);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        OrderResponse orderResponse = service.createOrder(createOrderRequest);
+        return ResponseEntity.status(201).body(orderResponse);
     }
 
     @PutMapping
     public ResponseEntity<OrderResponse> updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) {
-        try {
-            OrderResponse orderResponse = service.updateOrder(updateOrderRequest);
-            return ResponseEntity.ok(orderResponse);
-        } catch (OrderNotFoundException e) {
-            return ResponseEntity.status(404).body(null);
-        }
+        OrderResponse orderResponse = service.updateOrder(updateOrderRequest);
+        return ResponseEntity.ok(orderResponse);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
-        try {
-            service.deleteOrder(id);
-            return ResponseEntity.noContent().build();
-        } catch (OrderNotFoundException e) {
-            return ResponseEntity.status(404).build();
-        }
+        service.deleteOrder(id);
+        return ResponseEntity.noContent().build();
     }
 }
-

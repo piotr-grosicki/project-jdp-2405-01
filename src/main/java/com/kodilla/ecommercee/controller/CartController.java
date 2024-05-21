@@ -34,7 +34,7 @@ public class CartController {
 
     @PostMapping("/{cartId}")
     public ResponseEntity<OrderResponse> createOrderFromCart(@PathVariable Long cartId) {
-        return ResponseEntity.ok(new OrderResponse(1L, cartId, 1L, BigDecimal.ZERO, "SEND"));
+        return ResponseEntity.ok(new OrderResponse(1L, cartId, 1L, BigDecimal.ZERO, true));
 
     }
 
