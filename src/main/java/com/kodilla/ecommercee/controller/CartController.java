@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.request.AddProductToCartRequest;
 import com.kodilla.ecommercee.dto.request.CreateCartRequest;
+import com.kodilla.ecommercee.dto.request.CreateOrderRequest;
 import com.kodilla.ecommercee.dto.request.RemoveProductFromCartRequest;
 import com.kodilla.ecommercee.dto.response.CartResponse;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
@@ -26,8 +27,8 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping("{cartId}")
-    public ResponseEntity<List<ProductResponse>> getAllProductsFromCart(@PathVariable Long cartId) {
-        return ResponseEntity.ok(List.of(new ProductResponse(1L, "product", "description", BigDecimal.ZERO, 0)));
+    public ResponseEntity<List<ProductResponse>> getAllProductsFromCart(@PathVariable Long cartId) throws CartNotFoundException {
+        return ResponseEntity.ok(cartService.getCart(cartId).productResponses());
     }
 
     @PostMapping
@@ -40,15 +41,14 @@ public class CartController {
         return ResponseEntity.ok(cartService.addProductToCart(addProductToCartRequest));
     }
 
-    @PostMapping("/{cartId}")
-    public ResponseEntity<OrderResponse> createOrderFromCart(@PathVariable Long cartId) {
-        return ResponseEntity.ok(new OrderResponse(1L, cartId, 1L, BigDecimal.ZERO, "SEND"));
-
+    @PostMapping("/order")
+    public ResponseEntity<OrderResponse> createOrderFromCart(@RequestBody CreateOrderRequest createOrderRequest) throws UserNotFoundException, CartNotFoundException {
+        return ResponseEntity.ok(cartService.createOrderFromCart(createOrderRequest));
     }
 
     @DeleteMapping
-    public ResponseEntity<ProductResponse> deleteProductFromCart(@RequestBody RemoveProductFromCartRequest removeProductFromCartRequest) {
-        return ResponseEntity.ok(new ProductResponse(removeProductFromCartRequest.productId(), "product name", "product description", BigDecimal.ZERO, 0));
+    public ResponseEntity<ProductResponse> deleteProductFromCart(@RequestBody RemoveProductFromCartRequest removeProductFromCartRequest) throws CartNotFoundException, ProductNotFoundException {
+        return ResponseEntity.ok(cartService.deleteProductFromCart(removeProductFromCartRequest));
     }
 
 }
