@@ -2,7 +2,6 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.request.AddProductToCartRequest;
 import com.kodilla.ecommercee.dto.request.CreateCartRequest;
-import com.kodilla.ecommercee.dto.request.CreateOrderRequest;
 import com.kodilla.ecommercee.dto.request.RemoveProductFromCartRequest;
 import com.kodilla.ecommercee.dto.response.CartResponse;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
@@ -15,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -41,9 +38,9 @@ public class CartController {
         return ResponseEntity.ok(cartService.addProductToCart(addProductToCartRequest));
     }
 
-    @PostMapping("/order")
-    public ResponseEntity<OrderResponse> createOrderFromCart(@RequestBody CreateOrderRequest createOrderRequest) throws UserNotFoundException, CartNotFoundException {
-        return ResponseEntity.ok(cartService.createOrderFromCart(createOrderRequest));
+    @PostMapping("{cartId}")
+    public ResponseEntity<OrderResponse> createOrderFromCart(@PathVariable Long cartId) throws CartNotFoundException {
+        return ResponseEntity.ok(cartService.createOrderFromCart(cartId));
     }
 
     @DeleteMapping

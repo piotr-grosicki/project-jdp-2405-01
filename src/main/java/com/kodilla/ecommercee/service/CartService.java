@@ -2,7 +2,6 @@ package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.dto.request.AddProductToCartRequest;
 import com.kodilla.ecommercee.dto.request.CreateCartRequest;
-import com.kodilla.ecommercee.dto.request.CreateOrderRequest;
 import com.kodilla.ecommercee.dto.request.RemoveProductFromCartRequest;
 import com.kodilla.ecommercee.dto.response.CartResponse;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
@@ -77,17 +76,21 @@ public class CartService {
         return productMapper.mapToProductResponse(productToRemove);
     }
 
-    public OrderResponse createOrderFromCart(CreateOrderRequest createOrderRequest) throws UserNotFoundException, CartNotFoundException{
+    public OrderResponse createOrderFromCart(Long cartId) throws CartNotFoundException{
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
+        User user = cart.getUser();
         Order order = new Order(
-                createOrderRequest.totalPrice(),
-                createOrderRequest.shippingAddress(),
-                createOrderRequest.status(),
-                userRepository.findById(createOrderRequest.userId()).orElseThrow(() -> new UserNotFoundException(createOrderRequest.userId())),
-                cartRepository.findById(createOrderRequest.cartId()).orElseThrow(() -> new CartNotFoundException(createOrderRequest.cartId()))
+                cart.getTotalProductPrice(),
+                user.getAddress(),
+                false,
+                user,
+                cart
         );
 
         orderRepository.save(order);
         return orderMapper.toOrderResponse(order);
+
+
     }
 
 
