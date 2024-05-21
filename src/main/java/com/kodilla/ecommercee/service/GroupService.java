@@ -25,8 +25,8 @@ public class GroupService {
         return groupMapper.mapToGroupListResponse(groups);
     }
 
-    public GroupResponse getGroup(Long id) throws GroupNotFoundException {
-        Group group = groupRepository.findById(id).orElseThrow(() -> new GroupNotFoundException(String.format("Group with id: %s could not be found", id)));
+    public GroupResponse getGroup(Long groupId) throws GroupNotFoundException {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException(groupId));
 
         return groupMapper.mapToGroupResponse(group);
     }
@@ -39,7 +39,7 @@ public class GroupService {
     }
 
     public GroupResponse updateGroup(UpdateGroupRequest updateGroupRequest) throws GroupNotFoundException {
-        Group group = groupRepository.findById(updateGroupRequest.id()).orElseThrow(() -> new GroupNotFoundException(String.format("Group with id: %s could not be found", updateGroupRequest.id())));
+        Group group = groupRepository.findById(updateGroupRequest.id()).orElseThrow(() -> new GroupNotFoundException(updateGroupRequest.id()));
 
         if (updateGroupRequest.name() != null && !updateGroupRequest.name().isEmpty() && !updateGroupRequest.name().equals(group.getName())) {
             group.setName(updateGroupRequest.name());
@@ -49,11 +49,11 @@ public class GroupService {
         return groupMapper.mapToGroupResponse(group);
     }
 
-    public void deleteGroup(Long id) throws GroupNotFoundException, GroupHasProductsException {
-        Group group = groupRepository.findById(id).orElseThrow(() -> new GroupNotFoundException(String.format("Group with id: %s could not be found", id)));
+    public void deleteGroup(Long groupId) throws GroupNotFoundException, GroupHasProductsException {
+        Group group = groupRepository.findById(groupId).orElseThrow(() -> new GroupNotFoundException(groupId));
 
         if (!group.getProductList().isEmpty()) {
-            throw new GroupHasProductsException(String.format("Group with id: %s still has products in it and cannot be deleted", id));
+            throw new GroupHasProductsException(groupId);
         } else {
             groupRepository.delete(group);
         }
