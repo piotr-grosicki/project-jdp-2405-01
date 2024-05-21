@@ -27,5 +27,9 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNullValueException(NullValueException nullValueException){
         return new ResponseEntity<>("Null value is not allowed",HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(NegativeValuesException.class)
+    public ResponseEntity<Object> handleNegativeValueException(NegativeValuesException negativeValuesException){
+        return new ResponseEntity<>("Negative value is not allowed",HttpStatus.BAD_REQUEST);
+    }
 
 }

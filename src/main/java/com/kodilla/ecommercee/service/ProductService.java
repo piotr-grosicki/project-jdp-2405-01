@@ -6,6 +6,7 @@ import com.kodilla.ecommercee.dto.response.ProductResponse;
 import com.kodilla.ecommercee.entity.Group;
 import com.kodilla.ecommercee.entity.Product;
 import com.kodilla.ecommercee.exception.GroupNotFoundException;
+import com.kodilla.ecommercee.exception.NegativeValuesException;
 import com.kodilla.ecommercee.exception.NullValueException;
 import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.mapper.ProductMapper;
@@ -34,20 +35,29 @@ public class ProductService {
         return productMapper.mapToProductResponse(product);
     }
 
-    public ProductResponse addProduct(CreateProductRequest createProductRequest) throws GroupNotFoundException, NullValueException{
-        Group group = groupRepository.findById(createProductRequest.group().getId()).orElseThrow(() -> new GroupNotFoundException(String.format("Group with id: %d could not be found", createProductRequest.group().getId())));
-        if(createProductRequest.name() == null){
+    public ProductResponse addProduct(CreateProductRequest createProductRequest) throws GroupNotFoundException, NullValueException,NegativeValuesException {
+        groupRepository.findById(createProductRequest.group().getId()).orElseThrow(() -> new GroupNotFoundException(String.format("Group with id: %d could not be found", createProductRequest.group().getId())));
+        if (createProductRequest.name() == null || createProductRequest.description() == null ||
+                createProductRequest.price() == null || createProductRequest.quantity() == null) {
             throw new NullValueException();
         }
+        if(createProductRequest.price().signum() < 0 || createProductRequest.quantity() < 0){
+            throw new NegativeValuesException();
+        }
+
         Product product = new Product(createProductRequest.name(), createProductRequest.description(), createProductRequest.price(), createProductRequest.quantity(), createProductRequest.group());
         productRepository.save(product);
         return productMapper.mapToProductResponse(product);
     }
 
-    public ProductResponse updateProduct(UpdateProductRequest updateProductRequest) throws ProductNotFoundException, NullValueException{
+    public ProductResponse updateProduct(UpdateProductRequest updateProductRequest) throws ProductNotFoundException, NullValueException,NegativeValuesException {
         Product product = productRepository.findById(updateProductRequest.id()).orElseThrow(() -> new ProductNotFoundException(String.format("Product with id: %d could not be found", updateProductRequest.id())));
-        if(updateProductRequest.name() == null){
+        if (updateProductRequest.name() == null || updateProductRequest.description() == null ||
+                updateProductRequest.price() == null || updateProductRequest.quantity() == null) {
             throw new NullValueException();
+        }
+        if(updateProductRequest.price().signum() < 0 || updateProductRequest.quantity() < 0){
+            throw new NegativeValuesException();
         }
         product.setName(updateProductRequest.name());
         product.setDescription(updateProductRequest.description());

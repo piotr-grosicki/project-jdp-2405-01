@@ -4,6 +4,7 @@ import com.kodilla.ecommercee.dto.request.CreateProductRequest;
 import com.kodilla.ecommercee.dto.request.UpdateProductRequest;
 import com.kodilla.ecommercee.dto.response.ProductResponse;
 import com.kodilla.ecommercee.exception.GroupNotFoundException;
+import com.kodilla.ecommercee.exception.NegativeValuesException;
 import com.kodilla.ecommercee.exception.NullValueException;
 import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.service.ProductService;
@@ -31,12 +32,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest createProductRequest) throws GroupNotFoundException, NullValueException {
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest createProductRequest) throws GroupNotFoundException, NullValueException, NegativeValuesException {
         return ResponseEntity.ok(productService.addProduct(createProductRequest));
     }
 
     @PutMapping
-    public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest updateProductRequest) throws ProductNotFoundException,NullValueException{
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest updateProductRequest) throws ProductNotFoundException,NullValueException,NegativeValuesException{
         return ResponseEntity.ok(productService.updateProduct(updateProductRequest));
     }
 
