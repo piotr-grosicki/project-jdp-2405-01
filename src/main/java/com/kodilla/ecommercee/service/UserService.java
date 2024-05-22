@@ -38,13 +38,13 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-    public UserResponse createUser(CreateUserRequest createUserRequest) throws NullValueException, UsernameAlreadyExistsException {
+    public UserResponse createUser(CreateUserRequest createUserRequest) throws NullOrEmptyValueException, UsernameAlreadyExistsException {
         if (userRepository.findUserByUsername(createUserRequest.username()).isPresent()) {
             throw new UsernameAlreadyExistsException(createUserRequest.username());
         }
 
-        if (createUserRequest.username() == null || createUserRequest.password() == null || createUserRequest.address() == null) {
-            throw new NullValueException();
+        if (isNullOrEmpty(createUserRequest.username()) || isNullOrEmpty(createUserRequest.password()) || isNullOrEmpty(createUserRequest.address())) {
+            throw new NullOrEmptyValueException();
         }
         User newUser = new User(createUserRequest.username(), createUserRequest.password(), createUserRequest.address());
         newUser.setUserLocked(false);
@@ -54,11 +54,16 @@ public class UserService {
         return userMapper.toUserResponse(newUser);
     }
 
-    public UserResponse updateUser(UpdateUserRequest updateUserRequest) throws UserNotFoundException, UsernameAlreadyExistsException {
+    public UserResponse updateUser(UpdateUserRequest updateUserRequest) throws UserNotFoundException, UsernameAlreadyExistsException, NullOrEmptyValueException {
         User user = userRepository.findById(updateUserRequest.id()).orElseThrow(() -> new UserNotFoundException(updateUserRequest.id()));
         boolean isUpdated = false;
 
-        if (updateUserRequest.username() != null && !updateUserRequest.username().isEmpty() && !updateUserRequest.username().equals(user.getUsername())) {
+
+        if (isNullOrEmpty(updateUserRequest.username()) || isNullOrEmpty(updateUserRequest.password()) || isNullOrEmpty(updateUserRequest.address())) {
+            throw new NullOrEmptyValueException();
+        }
+
+        if (!updateUserRequest.username().equals(user.getUsername())) {
             if (userRepository.findUserByUsername(updateUserRequest.username()).isPresent()) {
                 throw new UsernameAlreadyExistsException(updateUserRequest.username());
             }
@@ -66,12 +71,12 @@ public class UserService {
             isUpdated = true;
         }
 
-        if (updateUserRequest.password() != null && !updateUserRequest.password().isEmpty() && !updateUserRequest.password().equals(user.getPassword())) {
+        if (!updateUserRequest.password().equals(user.getPassword())) {
             user.setPassword(updateUserRequest.password());
             isUpdated = true;
         }
 
-        if (updateUserRequest.address() != null && !updateUserRequest.address().isEmpty() && !updateUserRequest.address().equals(user.getAddress())) {
+        if (!updateUserRequest.address().equals(user.getAddress())) {
             user.setAddress(updateUserRequest.address());
             isUpdated = true;
         }
@@ -83,18 +88,24 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+    private boolean isNullOrEmpty(String requestData) {
+        return requestData == null || requestData.isEmpty();
+    }
+
     public void deleteUser(Long userId) throws UserNotFoundException {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         userRepository.delete(user);
     }
 
-    public UserLockedResponse lockUser(LockUserRequest lockUserRequest) throws UserNotFoundException {
+    public UserLockedResponse lockUser(LockUserRequest lockUserRequest) throws UserNotFoundException, NullOrEmptyValueException {
         User user = userRepository.findById(lockUserRequest.userId()).orElseThrow(() -> new UserNotFoundException(lockUserRequest.userId()));
 
-        if (lockUserRequest.username() != null && !lockUserRequest.username().isEmpty() && user.getUsername().equals(lockUserRequest.username()) &&
-                lockUserRequest.password() != null && !lockUserRequest.password().isEmpty() && user.getPassword().equals(lockUserRequest.password())
-        ) {
+        if (isNullOrEmpty(lockUserRequest.username()) || isNullOrEmpty(lockUserRequest.password())) {
+            throw new NullOrEmptyValueException();
+        }
+
+        if (user.getUsername().equals(lockUserRequest.username()) && user.getPassword().equals(lockUserRequest.password())) {
             user.setUserLocked(true);
         }
 
@@ -103,7 +114,7 @@ public class UserService {
         return userMapper.mapToUserLockedResponse(user);
     }
 
-    public Integer loginUser(UserCredentialsRequest userCredentialsRequest) throws InvalidCredentialsException, UsernameNotFoundException {
+    public Integer loginUser(UserCredentialsRequest userCredentialsRequest) throws InvalidCredentialsException, UsernameNotFoundException, NullOrEmptyValueException {
 
         User user = userRepository.findUserByUsername(userCredentialsRequest.username()).orElseThrow(() -> new UsernameNotFoundException(userCredentialsRequest.username()));
         SecureRandom random = new SecureRandom();
@@ -111,7 +122,10 @@ public class UserService {
         int max = 2000000;
         int token = random.nextInt(max - min) + min;
 
-        if (userCredentialsRequest.password() != null && !userCredentialsRequest.password().isEmpty() && user.getPassword().equals(userCredentialsRequest.password())) {
+        if (isNullOrEmpty(userCredentialsRequest.username()) || isNullOrEmpty(userCredentialsRequest.password())) {
+            throw new NullOrEmptyValueException();
+        }
+        if (user.getPassword().equals(userCredentialsRequest.password())) {
             user.setToken(token);
             user.setTokenCreationTime(LocalDateTime.now());
             userRepository.save(user);
@@ -127,13 +141,12 @@ public class UserService {
         LocalDateTime currentTime = LocalDateTime.now();
         List<User> users = userRepository.findAll();
 
-        for (User user : users) {
-            if (user.getTokenCreationTime() != null && user.getTokenCreationTime().plusHours(1).isBefore(currentTime)) {
-                user.setToken(null);
-                user.setTokenCreationTime(null);
-                userRepository.save(user);
-            }
-        }
-
+        users.stream()
+                .filter(user -> user.getTokenCreationTime() != null && user.getTokenCreationTime().plusHours(1).isBefore(currentTime))
+                .forEach(user -> {
+                    user.setToken(null);
+                    user.setTokenCreationTime(null);
+                    userRepository.save(user);
+                });
     }
 }

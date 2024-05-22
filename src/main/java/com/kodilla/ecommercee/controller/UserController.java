@@ -32,22 +32,22 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) throws NullValueException, UsernameAlreadyExistsException {
+    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) throws NullOrEmptyValueException, UsernameAlreadyExistsException {
         return ResponseEntity.ok(userService.createUser(createUserRequest));
     }
 
     @PostMapping("/login")
-    public Integer loginUser(@RequestBody UserCredentialsRequest userCredentialsRequest) throws InvalidCredentialsException, UsernameNotFoundException {
+    public Integer loginUser(@RequestBody UserCredentialsRequest userCredentialsRequest) throws InvalidCredentialsException, UsernameNotFoundException, NullOrEmptyValueException {
         return userService.loginUser(userCredentialsRequest);
     }
 
     @PutMapping
-    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserRequest updateUserRequest) throws UserNotFoundException, UsernameAlreadyExistsException {
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserRequest updateUserRequest) throws UserNotFoundException, UsernameAlreadyExistsException, NullOrEmptyValueException {
         return ResponseEntity.ok(userService.updateUser(updateUserRequest));
     }
 
     @PutMapping("/lock")
-    public ResponseEntity<UserLockedResponse> lockUser(@RequestBody LockUserRequest lockUserRequest) throws UserNotFoundException {
+    public ResponseEntity<UserLockedResponse> lockUser(@RequestBody LockUserRequest lockUserRequest) throws UserNotFoundException, NullOrEmptyValueException {
         return ResponseEntity.ok(userService.lockUser(lockUserRequest));
     }
 
