@@ -38,13 +38,13 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-    public UserResponse createUser(CreateUserRequest createUserRequest) throws NullOrEmptyValueException, UsernameAlreadyExistsException {
+    public UserResponse createUser(CreateUserRequest createUserRequest) throws NullValueException, UsernameAlreadyExistsException {
         if (userRepository.findUserByUsername(createUserRequest.username()).isPresent()) {
             throw new UsernameAlreadyExistsException(createUserRequest.username());
         }
 
         if (isNullOrEmpty(createUserRequest.username()) || isNullOrEmpty(createUserRequest.password()) || isNullOrEmpty(createUserRequest.address())) {
-            throw new NullOrEmptyValueException();
+            throw new NullValueException();
         }
         User newUser = new User(createUserRequest.username(), createUserRequest.password(), createUserRequest.address());
         newUser.setUserLocked(false);
@@ -54,13 +54,13 @@ public class UserService {
         return userMapper.toUserResponse(newUser);
     }
 
-    public UserResponse updateUser(UpdateUserRequest updateUserRequest) throws UserNotFoundException, UsernameAlreadyExistsException, NullOrEmptyValueException {
+    public UserResponse updateUser(UpdateUserRequest updateUserRequest) throws UserNotFoundException, UsernameAlreadyExistsException, NullValueException {
         User user = userRepository.findById(updateUserRequest.id()).orElseThrow(() -> new UserNotFoundException(updateUserRequest.id()));
         boolean isUpdated = false;
 
 
         if (isNullOrEmpty(updateUserRequest.username()) || isNullOrEmpty(updateUserRequest.password()) || isNullOrEmpty(updateUserRequest.address())) {
-            throw new NullOrEmptyValueException();
+            throw new NullValueException();
         }
 
         if (!updateUserRequest.username().equals(user.getUsername())) {
@@ -98,11 +98,11 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public UserLockedResponse lockUser(LockUserRequest lockUserRequest) throws UserNotFoundException, NullOrEmptyValueException {
+    public UserLockedResponse lockUser(LockUserRequest lockUserRequest) throws UserNotFoundException, NullValueException {
         User user = userRepository.findById(lockUserRequest.userId()).orElseThrow(() -> new UserNotFoundException(lockUserRequest.userId()));
 
         if (isNullOrEmpty(lockUserRequest.username()) || isNullOrEmpty(lockUserRequest.password())) {
-            throw new NullOrEmptyValueException();
+            throw new NullValueException();
         }
 
         if (user.getUsername().equals(lockUserRequest.username()) && user.getPassword().equals(lockUserRequest.password())) {
@@ -114,7 +114,7 @@ public class UserService {
         return userMapper.mapToUserLockedResponse(user);
     }
 
-    public Integer loginUser(UserCredentialsRequest userCredentialsRequest) throws InvalidCredentialsException, UsernameNotFoundException, NullOrEmptyValueException {
+    public Integer loginUser(UserCredentialsRequest userCredentialsRequest) throws InvalidCredentialsException, UsernameNotFoundException, NullValueException {
 
         User user = userRepository.findUserByUsername(userCredentialsRequest.username()).orElseThrow(() -> new UsernameNotFoundException(userCredentialsRequest.username()));
         SecureRandom random = new SecureRandom();
@@ -123,7 +123,7 @@ public class UserService {
         int token = random.nextInt(max - min) + min;
 
         if (isNullOrEmpty(userCredentialsRequest.username()) || isNullOrEmpty(userCredentialsRequest.password())) {
-            throw new NullOrEmptyValueException();
+            throw new NullValueException();
         }
         if (user.getPassword().equals(userCredentialsRequest.password())) {
             user.setToken(token);

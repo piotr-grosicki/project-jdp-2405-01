@@ -14,9 +14,9 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(invalidCredentialsException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NullOrEmptyValueException.class)
-    public ResponseEntity<Object> handleNullValueException(NullOrEmptyValueException nullOrEmptyValueException) {
-        return new ResponseEntity<>(nullOrEmptyValueException.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(NullValueException.class)
+    public ResponseEntity<Object> handleNullValueException(NullValueException nullValueException) {
+        return new ResponseEntity<>(nullValueException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
