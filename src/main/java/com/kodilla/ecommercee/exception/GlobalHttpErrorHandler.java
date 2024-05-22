@@ -10,17 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<Object> handleProductException(ProductNotFoundException productNotFoundException) {
-        return new ResponseEntity<>("Product with given Id doesn't exist", HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(GroupHasProductsException.class)
-    public ResponseEntity<Object> handleGroupHasProductsException(GroupHasProductsException groupHasProductsException) {
-        return new ResponseEntity<>("Group with given id still has products in it and cannot be deleted", HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(GroupNotFoundException.class)
-    public ResponseEntity<Object> handleBookCopyException(GroupNotFoundException groupNotFoundException) {
-        return new ResponseEntity<>("Group with given id could not be found", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(productNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NullValueException.class)
