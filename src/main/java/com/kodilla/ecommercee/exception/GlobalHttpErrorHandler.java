@@ -11,7 +11,7 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<Object> handleProductException(ProductNotFoundException productNotFoundException) {
-        return new ResponseEntity<>("Product with given Id doesn't exist", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(productNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NullValueException.class)
@@ -22,8 +22,6 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNegativeValueException(NegativeValuesException negativeValuesException){
         return new ResponseEntity<>("Negative value is not allowed",HttpStatus.BAD_REQUEST);
     }
-
-}
 
 
     @ExceptionHandler(GroupHasProductsException.class)
