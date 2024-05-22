@@ -34,4 +34,24 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(usernameNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Object> handleProductException(ProductNotFoundException productNotFoundException) {
+        return new ResponseEntity<>(productNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NegativeValuesException.class)
+    public ResponseEntity<Object> handleNegativeValueException(NegativeValuesException negativeValuesException){
+        return new ResponseEntity<>("Negative value is not allowed",HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(GroupHasProductsException.class)
+    public ResponseEntity<Object> handleGroupHasProductsException(GroupHasProductsException groupHasProductsException) {
+        return new ResponseEntity<>(groupHasProductsException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(GroupNotFoundException.class)
+    public ResponseEntity<Object> handleGroupNotFoundException(GroupNotFoundException groupNotFoundException) {
+        return new ResponseEntity<>(groupNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

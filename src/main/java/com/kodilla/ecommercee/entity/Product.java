@@ -1,17 +1,16 @@
 package com.kodilla.ecommercee.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 
 @Data
-@Entity
-@Table(name = "PRODUCTS")
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "PRODUCTS")
 public class Product {
 
     @ManyToOne
@@ -40,5 +39,13 @@ public class Product {
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+    }
+
+    public Product(String name, String description, BigDecimal price, Integer quantity, Group group) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+        this.group = group;
     }
 }
