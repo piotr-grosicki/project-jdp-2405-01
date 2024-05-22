@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class User {
     @Column(name = "USER_ID", nullable = false)
     private Long id;
 
-    @Column(name = "USERNAME", nullable = false)
+    @Column(name = "USERNAME", nullable = false, unique = true)
     private String username;
 
     @Column(name = "PASSWORD", nullable = false)
@@ -31,6 +32,12 @@ public class User {
 
     @Column(name = "TOKEN")
     private Integer token;
+
+    @Column(name = "USER_LOCKED")
+    private boolean isUserLocked;
+
+    @Column(name = "TOKEN_CREATION_TIME")
+    private LocalDateTime tokenCreationTime;
 
     @OneToMany(targetEntity = Order.class,
             mappedBy = "user",
