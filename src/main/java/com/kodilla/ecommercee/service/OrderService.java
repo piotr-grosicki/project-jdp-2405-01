@@ -6,6 +6,7 @@ import com.kodilla.ecommercee.dto.response.OrderResponse;
 import com.kodilla.ecommercee.entity.Order;
 import com.kodilla.ecommercee.entity.User;
 import com.kodilla.ecommercee.entity.Cart;
+import com.kodilla.ecommercee.entity.enums.OrderStatus;
 import com.kodilla.ecommercee.exception.OrderNotFoundException;
 import com.kodilla.ecommercee.exception.UserNotFoundException;
 import com.kodilla.ecommercee.exception.CartNotFoundException;
@@ -20,6 +21,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static com.kodilla.ecommercee.entity.enums.OrderStatus.PAID;
+import static com.kodilla.ecommercee.entity.enums.OrderStatus.UNPAID;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +59,8 @@ public class OrderService {
 
         order.setTotalPrice(updateOrderRequest.totalPrice());
         order.setShippingAddress(updateOrderRequest.shippingAddress());
-        order.setStatus(updateOrderRequest.totalPrice().compareTo(cartTotalPrice) >= 0);
+        if(updateOrderRequest.totalPrice().compareTo(cartTotalPrice) >= 0)
+            order.setStatus(PAID);
 
         Order updatedOrder = orderRepository.save(order);
         return orderMapper.toOrderResponse(updatedOrder);
@@ -69,7 +74,7 @@ public class OrderService {
 
         BigDecimal totalPrice = cart.getTotalProductPrice();
         String shippingAddress = user.getAddress();
-        boolean status = false;
+        OrderStatus status = UNPAID;
 
         Order order = new Order(totalPrice, shippingAddress, status, user, cart);
         Order createdOrder = orderRepository.save(order);

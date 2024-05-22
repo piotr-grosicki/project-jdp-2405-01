@@ -6,6 +6,7 @@ import com.kodilla.ecommercee.dto.request.RemoveProductFromCartRequest;
 import com.kodilla.ecommercee.dto.response.CartResponse;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
 import com.kodilla.ecommercee.dto.response.ProductResponse;
+import com.kodilla.ecommercee.entity.enums.OrderStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class CartController {
 
     @PostMapping("/{cartId}")
     public ResponseEntity<OrderResponse> createOrderFromCart(@PathVariable Long cartId) {
-        return ResponseEntity.ok(new OrderResponse(1L, cartId, 1L, BigDecimal.ZERO, true));
+        return ResponseEntity.ok(new OrderResponse(1L, cartId, 1L, BigDecimal.ZERO, OrderStatus.UNPAID));
 
     }
 

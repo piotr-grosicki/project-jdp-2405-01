@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.entity;
 
+import com.kodilla.ecommercee.entity.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class Order {
     private String shippingAddress;
 
     @Column(name = "STATUS", nullable = false)
-    private boolean status;
+    private OrderStatus status;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
@@ -36,7 +37,7 @@ public class Order {
     @JoinColumn(name = "CART_ID")
     private Cart cart;
 
-    public Order(BigDecimal totalPrice, String shippingAddress, boolean status, User user, Cart cart) {
+    public Order(BigDecimal totalPrice, String shippingAddress, OrderStatus status, User user, Cart cart) {
         this.totalPrice = totalPrice;
         this.shippingAddress = shippingAddress;
         this.status = status;

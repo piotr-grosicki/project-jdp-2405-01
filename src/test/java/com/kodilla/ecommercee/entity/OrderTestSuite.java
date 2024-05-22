@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.kodilla.ecommercee.entity.enums.OrderStatus.PAID;
+import static com.kodilla.ecommercee.entity.enums.OrderStatus.UNPAID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -45,10 +47,10 @@ public class OrderTestSuite {
         cartRepository.save(cart2);
         cartRepository.save(cart3);
         cartRepository.save(cart4);
-        Order order = new Order(BigDecimal.ZERO, user.getAddress(), false, user, cart);
-        Order order2 = new Order(BigDecimal.ZERO, user.getAddress(), false, user, cart2);
-        Order order3 = new Order(BigDecimal.ZERO, user.getAddress(), false, user, cart3);
-        Order order4 = new Order(BigDecimal.ZERO, user.getAddress(), false, user, cart4);
+        Order order = new Order(BigDecimal.ZERO, user.getAddress(), UNPAID, user, cart);
+        Order order2 = new Order(BigDecimal.ZERO, user.getAddress(), UNPAID, user, cart2);
+        Order order3 = new Order(BigDecimal.ZERO, user.getAddress(), UNPAID, user, cart3);
+        Order order4 = new Order(BigDecimal.ZERO, user.getAddress(), UNPAID, user, cart4);
 
         orderRepository.save(order);
         orderRepository.save(order2);
@@ -71,8 +73,8 @@ public class OrderTestSuite {
         userRepository.save(user);
         cartRepository.save(cart);
         cartRepository.save(cart2);
-        Order order = new Order(BigDecimal.ZERO, user.getAddress(), false, user, cart);
-        Order order2 = new Order(BigDecimal.ZERO, user.getAddress(), false, user, cart2);
+        Order order = new Order(BigDecimal.ZERO, user.getAddress(), UNPAID, user, cart);
+        Order order2 = new Order(BigDecimal.ZERO, user.getAddress(), UNPAID, user, cart2);
 
         orderRepository.save(order);
         orderRepository.save(order2);
@@ -91,7 +93,7 @@ public class OrderTestSuite {
         Cart cart = new Cart(new ArrayList<>(), user, BigDecimal.ONE, false);
         userRepository.save(user);
         cartRepository.save(cart);
-        Order order = new Order(BigDecimal.ZERO, user.getAddress(), false, user, cart);
+        Order order = new Order(BigDecimal.ZERO, user.getAddress(), UNPAID, user, cart);
 
         //When
         orderRepository.save(order);
@@ -103,22 +105,22 @@ public class OrderTestSuite {
 
     @Test
     void shouldUpdateOrder() {
-        //Given
+        // Given
         User user = new User("test", "test", "test");
         Cart cart = new Cart(new ArrayList<>(), user, BigDecimal.ONE, false);
         userRepository.save(user);
         cartRepository.save(cart);
-        Order order = new Order(BigDecimal.ZERO, user.getAddress(), false, user, cart);
+        Order order = new Order(BigDecimal.ZERO, user.getAddress(), UNPAID, user, cart);
 
         orderRepository.save(order);
 
-        //When
-        order.setStatus(true);
+        // When
+        order.setStatus(PAID);
         orderRepository.save(order);
         Optional<Order> expectedOrder = orderRepository.findById(order.getId());
 
-        //Then
-        assertTrue(expectedOrder.get().isStatus());
+        // Then
+        assertEquals(PAID, expectedOrder.get().getStatus());
     }
 
     @Test
@@ -128,7 +130,7 @@ public class OrderTestSuite {
         Cart cart = new Cart(new ArrayList<>(), user, BigDecimal.ONE, false);
         userRepository.save(user);
         cartRepository.save(cart);
-        Order order = new Order(BigDecimal.ZERO, user.getAddress(), false, user, cart);
+        Order order = new Order(BigDecimal.ZERO, user.getAddress(), UNPAID, user, cart);
 
         orderRepository.save(order);
 

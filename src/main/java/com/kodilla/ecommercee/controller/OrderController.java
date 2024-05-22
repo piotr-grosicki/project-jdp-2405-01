@@ -3,6 +3,7 @@ package com.kodilla.ecommercee.controller;
 import com.kodilla.ecommercee.dto.request.CreateOrderRequest;
 import com.kodilla.ecommercee.dto.request.UpdateOrderRequest;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
+import com.kodilla.ecommercee.entity.enums.OrderStatus;
 import com.kodilla.ecommercee.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +41,10 @@ public class OrderController {
     }
 
     @PutMapping
-    public ResponseEntity<OrderResponse> updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) {
+    public ResponseEntity<String> updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) {
         OrderResponse orderResponse = service.updateOrder(updateOrderRequest);
-        return ResponseEntity.ok(orderResponse);
+        String message = orderResponse.status() == OrderStatus.PAID ? "Order paid" : "Order unpaid";
+        return ResponseEntity.ok(message);
     }
 
     @DeleteMapping("/{id}")

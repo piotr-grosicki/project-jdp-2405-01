@@ -13,7 +13,7 @@ public class OrderMapper {
                 order.getCart().getId(),
                 order.getUser().getId(),
                 order.getTotalPrice(),
-                order.isStatus()
+                order.getStatus()
         );
     }
 }

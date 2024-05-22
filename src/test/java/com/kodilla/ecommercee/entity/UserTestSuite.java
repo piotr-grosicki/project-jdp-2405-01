@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.entity;
 
+import com.kodilla.ecommercee.entity.enums.OrderStatus;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.OrderRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static com.kodilla.ecommercee.entity.enums.OrderStatus.PAID;
+import static com.kodilla.ecommercee.entity.enums.OrderStatus.UNPAID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -112,11 +115,11 @@ public class UserTestSuite {
         order1.setUser(user2);
         order1.setShippingAddress("ShippingAddress 1");
         order1.setTotalPrice(new BigDecimal(100));
-        order1.setStatus(false);
+        order1.setStatus(UNPAID);
         order2.setUser(user2);
         order2.setShippingAddress("ShippingAddress 2");
         order2.setTotalPrice(new BigDecimal(200));
-        order2.setStatus(true);
+        order2.setStatus(PAID);
         orderRepository.save(order1);
         orderRepository.save(order2);
 
@@ -156,7 +159,7 @@ public class UserTestSuite {
         order1.setUser(user);
         order1.setShippingAddress("ShippingAddress 2");
         order1.setTotalPrice(new BigDecimal(100));
-        order1.setStatus(false);
+        order1.setStatus(UNPAID);
 
         //when
         userRepository.save(user);
@@ -192,16 +195,16 @@ public class UserTestSuite {
         order1.setUser(user);
         order1.setShippingAddress("ShippingAddress 1");
         order1.setTotalPrice(new BigDecimal(100));
-        order1.setStatus(false);
+        order1.setStatus(UNPAID);
         order2.setUser(user);
         order2.setShippingAddress("ShippingAddress 2");
         order2.setTotalPrice(new BigDecimal(200));
-        order2.setStatus(true);
+        order2.setStatus(PAID);
         orderRepository.save(order1);
         orderRepository.save(order2);
         order3.setShippingAddress("ShippingAddress 3");
         order3.setTotalPrice(new BigDecimal(300));
-        order3.setStatus(false);
+        order3.setStatus(UNPAID);
 
         //when
         order3.setUser(user);
