@@ -6,24 +6,20 @@ import com.kodilla.ecommercee.dto.request.RemoveProductFromCartRequest;
 import com.kodilla.ecommercee.dto.response.CartResponse;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
 import com.kodilla.ecommercee.dto.response.ProductResponse;
-import com.kodilla.ecommercee.entity.Cart;
-import com.kodilla.ecommercee.entity.Order;
-import com.kodilla.ecommercee.entity.Product;
-import com.kodilla.ecommercee.entity.User;
+import com.kodilla.ecommercee.entity.*;
 import com.kodilla.ecommercee.exception.CartNotFoundException;
 import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.exception.UserNotFoundException;
 import com.kodilla.ecommercee.mapper.CartMapper;
 import com.kodilla.ecommercee.mapper.OrderMapper;
 import com.kodilla.ecommercee.mapper.ProductMapper;
-import com.kodilla.ecommercee.repository.CartRepository;
-import com.kodilla.ecommercee.repository.OrderRepository;
-import com.kodilla.ecommercee.repository.ProductRepository;
-import com.kodilla.ecommercee.repository.UserRepository;
+import com.kodilla.ecommercee.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +28,7 @@ public class CartService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final CartItemRepository cartItemRepository;
 
     private final CartMapper cartMapper;
     private final ProductMapper productMapper;
@@ -56,24 +53,47 @@ public class CartService {
     }
 
     public CartResponse addProductToCart(AddProductToCartRequest addProductToCartRequest) throws CartNotFoundException, ProductNotFoundException {
-        Cart cart = cartRepository.findById(addProductToCartRequest.cartId()).orElseThrow(() -> new CartNotFoundException(addProductToCartRequest.cartId()));
-        cart.getProducts().add(productRepository.findById(addProductToCartRequest.productId()).orElseThrow(() -> new ProductNotFoundException(addProductToCartRequest.productId())));
 
+        Cart cart = cartRepository.findById(addProductToCartRequest.cartId()).orElseThrow(() -> new CartNotFoundException(addProductToCartRequest.cartId()));
+        Product product = productRepository.findById(addProductToCartRequest.productId()).orElseThrow(() -> new ProductNotFoundException(addProductToCartRequest.productId()));
+
+        Optional<CartItem> optionalCartItem = cart.getCartItems().stream().filter(ci -> ci.getProduct().equals(product)).findFirst();
+
+        if (optionalCartItem.isPresent()) {
+            CartItem cartItem = optionalCartItem.get();
+            cartItem.setQuantity(cartItem.getQuantity() + addProductToCartRequest.quantity());
+            cartItemRepository.save(cartItem);
+        } else {
+            cart.getCartItems().add(new CartItem(product, addProductToCartRequest.quantity(), cart));
+        }
+
+        cart.setTotalProductPrice(cart.getTotalProductPrice().add(product.getPrice().multiply(new BigDecimal(addProductToCartRequest.quantity()))));
         cartRepository.save(cart);
+
+        product.setQuantity(product.getQuantity() - addProductToCartRequest.quantity());
+        productRepository.save(product);
+
         return cartMapper.mapToCartResponse(cart);
     }
 
     public ProductResponse deleteProductFromCart(RemoveProductFromCartRequest removeProductFromCartRequest) throws CartNotFoundException, ProductNotFoundException {
         Cart cart = cartRepository.findById(removeProductFromCartRequest.cartId()).orElseThrow(() -> new CartNotFoundException(removeProductFromCartRequest.cartId()));
 
-        Product productToRemove = cart.getProducts().stream()
-                .filter(p -> p.getId().equals(removeProductFromCartRequest.productId()))
+        CartItem cartItemToRemove = cart.getCartItems().stream()
+                .filter(ci -> ci.getProduct().getId().equals(removeProductFromCartRequest.productId()))
                 .findFirst()
                 .orElseThrow(() -> new ProductNotFoundException(removeProductFromCartRequest.productId()));
 
-        cart.getProducts().remove(productToRemove);
+        cart.getCartItems().remove(cartItemToRemove);
+        Product productToRemoveFromCart = cartItemToRemove.getProduct();
+
+        productToRemoveFromCart.setQuantity(productToRemoveFromCart.getQuantity() - cartItemToRemove.getQuantity());
+        cart.setTotalProductPrice(cart.getTotalProductPrice().subtract(productToRemoveFromCart.getPrice().multiply(new BigDecimal(cartItemToRemove.getQuantity()))));
+
         cartRepository.save(cart);
-        return productMapper.mapToProductResponse(productToRemove);
+        productRepository.save(productToRemoveFromCart);
+
+        return productMapper.mapToProductResponse(cartItemToRemove.getProduct());
     }
 
     public OrderResponse createOrderFromCart(Long cartId) throws CartNotFoundException{
@@ -89,8 +109,6 @@ public class CartService {
 
         orderRepository.save(order);
         return orderMapper.toOrderResponse(order);
-
-
     }
 
 

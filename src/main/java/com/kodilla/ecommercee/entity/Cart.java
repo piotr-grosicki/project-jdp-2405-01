@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,13 +21,8 @@ public class Cart {
     @Column(name = "CART_ID", nullable = false)
     private Long id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "JOIN_PRODUCT_GROUP",
-            joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "CART_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")}
-    )
-    private List<Product> products = new ArrayList<>();
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<CartItem>();
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
@@ -40,8 +34,8 @@ public class Cart {
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
 
-    public Cart(List<Product> products, User user, BigDecimal totalProductPrice, Boolean isActive) {
-        this.products = products;
+    public Cart(List<CartItem> cartItems, User user, BigDecimal totalProductPrice, Boolean isActive) {
+        this.cartItems = cartItems;
         this.user = user;
         this.totalProductPrice = totalProductPrice;
         this.isActive = isActive;

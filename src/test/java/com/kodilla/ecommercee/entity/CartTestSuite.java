@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.entity;
 
+import com.kodilla.ecommercee.repository.CartItemRepository;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.ProductRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
@@ -24,6 +25,8 @@ public class CartTestSuite {
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
     @AfterEach
     public void cleanUp() {
@@ -130,7 +133,10 @@ public class CartTestSuite {
         //Given
         User user = new User("test", "test", "test");
         Product product = new Product("test", "test", new BigDecimal("1.50"), 2);
-        Cart cart = new Cart(List.of(product), user, new BigDecimal("9.99"), false);
+        Cart cart = new Cart(List.of(), user, new BigDecimal("9.99"), false);
+        CartItem cartItem = new CartItem(product, 2, cart);
+        cart.setCartItems(List.of(cartItem));
+
 
         userRepository.save(user);
         productRepository.save(product);
@@ -139,9 +145,11 @@ public class CartTestSuite {
         //When
         cartRepository.delete(cart);
         Optional<Cart> expectedCart = cartRepository.findById(cart.getId());
+        Optional<CartItem> expectedCartItem = cartItemRepository.findById(cartItem.getId());
 
         //Then
         assertEquals(Optional.empty(), expectedCart);
+        assertTrue(expectedCartItem.isEmpty());
         assertNotNull(user);
         assertNotNull(product);
     }

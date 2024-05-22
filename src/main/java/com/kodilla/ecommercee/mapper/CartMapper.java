@@ -9,12 +9,12 @@ import java.util.List;
 @Service
 public class CartMapper {
 
-    private ProductMapper productMapper;
+    private CartItemMapper cartItemMapper;
 
     public CartResponse mapToCartResponse(Cart cart) {
         return new CartResponse(
                 cart.getId(),
-                cart.getProducts().stream().map(productMapper::mapToProductResponse).toList(),
+                cart.getCartItems().stream().map(cartItemMapper::mapToCartItemResponse).toList(),
                 cart.getUser(),
                 cart.getTotalProductPrice(),
                 cart.getIsActive()

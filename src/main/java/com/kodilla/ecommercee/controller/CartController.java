@@ -3,6 +3,7 @@ package com.kodilla.ecommercee.controller;
 import com.kodilla.ecommercee.dto.request.AddProductToCartRequest;
 import com.kodilla.ecommercee.dto.request.CreateCartRequest;
 import com.kodilla.ecommercee.dto.request.RemoveProductFromCartRequest;
+import com.kodilla.ecommercee.dto.response.CartItemResponse;
 import com.kodilla.ecommercee.dto.response.CartResponse;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
 import com.kodilla.ecommercee.dto.response.ProductResponse;
@@ -24,7 +25,7 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping("{cartId}")
-    public ResponseEntity<List<ProductResponse>> getAllProductsFromCart(@PathVariable Long cartId) throws CartNotFoundException {
+    public ResponseEntity<List<CartItemResponse>> getAllProductsFromCart(@PathVariable Long cartId) throws CartNotFoundException {
         return ResponseEntity.ok(cartService.getCart(cartId).productResponses());
     }
 
