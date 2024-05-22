@@ -31,12 +31,12 @@ public class ProductService {
     }
 
     public ProductResponse getProduct(Long id) throws ProductNotFoundException {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(String.format("Product with id: %d could not be found", id)));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
         return productMapper.mapToProductResponse(product);
     }
 
     public ProductResponse addProduct(CreateProductRequest createProductRequest) throws GroupNotFoundException, NullValueException,NegativeValuesException {
-        groupRepository.findById(createProductRequest.group().getId()).orElseThrow(() -> new GroupNotFoundException(String.format("Group with id: %d could not be found", createProductRequest.group().getId())));
+        groupRepository.findById(createProductRequest.group().getId()).orElseThrow(() -> new GroupNotFoundException(createProductRequest.group().getId()));
         if (createProductRequest.name() == null || createProductRequest.description() == null ||
                 createProductRequest.price() == null || createProductRequest.quantity() == null) {
             throw new NullValueException();
@@ -51,7 +51,7 @@ public class ProductService {
     }
 
     public ProductResponse updateProduct(UpdateProductRequest updateProductRequest) throws ProductNotFoundException, NullValueException,NegativeValuesException {
-        Product product = productRepository.findById(updateProductRequest.id()).orElseThrow(() -> new ProductNotFoundException(String.format("Product with id: %d could not be found", updateProductRequest.id())));
+        Product product = productRepository.findById(updateProductRequest.id()).orElseThrow(() -> new ProductNotFoundException(updateProductRequest.id()));
         if (updateProductRequest.name() == null || updateProductRequest.description() == null ||
                 updateProductRequest.price() == null || updateProductRequest.quantity() == null) {
             throw new NullValueException();
@@ -70,7 +70,7 @@ public class ProductService {
 
     public void deleteProduct(Long id) throws ProductNotFoundException {
         if (!productRepository.existsById(id)) {
-            throw new ProductNotFoundException(String.format("Product with id: %d could not be found", id));
+            throw new ProductNotFoundException(id);
         }
         productRepository.deleteById(id);
     }
