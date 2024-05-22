@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     @PutMapping
-    public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest updateProductRequest) throws ProductNotFoundException,NullValueException,NegativeValuesException{
+    public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest updateProductRequest) throws ProductNotFoundException,GroupNotFoundException,NullValueException,NegativeValuesException{
         return ResponseEntity.ok(productService.updateProduct(updateProductRequest));
     }
 

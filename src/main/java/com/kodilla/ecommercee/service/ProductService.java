@@ -50,8 +50,11 @@ public class ProductService {
         return productMapper.mapToProductResponse(product);
     }
 
-    public ProductResponse updateProduct(UpdateProductRequest updateProductRequest) throws ProductNotFoundException, NullValueException,NegativeValuesException {
+    public ProductResponse updateProduct(UpdateProductRequest updateProductRequest) throws ProductNotFoundException,GroupNotFoundException, NullValueException,NegativeValuesException {
         Product product = productRepository.findById(updateProductRequest.id()).orElseThrow(() -> new ProductNotFoundException(updateProductRequest.id()));
+        groupRepository.findById(updateProductRequest.group().getId()).orElseThrow(() -> new GroupNotFoundException(updateProductRequest.group().getId()));
+        boolean updated = false;
+
         if (updateProductRequest.name() == null || updateProductRequest.description() == null ||
                 updateProductRequest.price() == null || updateProductRequest.quantity() == null) {
             throw new NullValueException();
@@ -59,12 +62,29 @@ public class ProductService {
         if(updateProductRequest.price().signum() < 0 || updateProductRequest.quantity() < 0){
             throw new NegativeValuesException();
         }
-        product.setName(updateProductRequest.name());
-        product.setDescription(updateProductRequest.description());
+        if(!updateProductRequest.name().equals(product.getName())) {
+            product.setName(updateProductRequest.name());
+            updated = true;
+        }
+        if(!updateProductRequest.description().equals(product.getDescription())) {
+            product.setDescription(updateProductRequest.description());
+            updated = true;
+        }
+        if(!updateProductRequest.price().equals(product.getPrice())){
         product.setPrice(updateProductRequest.price());
-        product.setQuantity(updateProductRequest.quantity());
-        product.setGroup(updateProductRequest.group());
-        productRepository.save(product);
+            updated = true;
+        }
+        if(!updateProductRequest.quantity().equals(product.getQuantity())){
+            product.setQuantity(updateProductRequest.quantity());
+            updated = true;
+        }
+        if(!updateProductRequest.group().equals(product.getGroup())){
+            product.setGroup(updateProductRequest.group());
+            updated = true;
+        }
+        if(updated) {
+            productRepository.save(product);
+        }
         return productMapper.mapToProductResponse(product);
     }
 
