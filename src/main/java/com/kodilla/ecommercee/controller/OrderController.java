@@ -1,6 +1,5 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.dto.request.CreateOrderRequest;
 import com.kodilla.ecommercee.dto.request.UpdateOrderRequest;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
 import com.kodilla.ecommercee.entity.enums.OrderStatus;
@@ -30,14 +29,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable Long id) {
-        OrderResponse orderResponse = service.getOrder(id);
-        return ResponseEntity.ok(orderResponse);
-    }
-
-    @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody CreateOrderRequest createOrderRequest) {
-        OrderResponse orderResponse = service.createOrder(createOrderRequest);
-        return ResponseEntity.status(201).body(orderResponse);
+        return ResponseEntity.ok(service.getOrder(id));
     }
 
     @PutMapping

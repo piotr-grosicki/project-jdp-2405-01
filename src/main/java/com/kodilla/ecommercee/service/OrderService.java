@@ -1,21 +1,13 @@
 package com.kodilla.ecommercee.service;
 
-import com.kodilla.ecommercee.dto.request.CreateOrderRequest;
 import com.kodilla.ecommercee.dto.request.UpdateOrderRequest;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
 import com.kodilla.ecommercee.entity.Order;
-import com.kodilla.ecommercee.entity.User;
-import com.kodilla.ecommercee.entity.Cart;
-import com.kodilla.ecommercee.entity.enums.OrderStatus;
-import com.kodilla.ecommercee.exception.OrderNotFoundException;
-import com.kodilla.ecommercee.exception.UserNotFoundException;
-import com.kodilla.ecommercee.exception.CartNotFoundException;
 import com.kodilla.ecommercee.exception.NotEnoughPriceException;
-import com.kodilla.ecommercee.exception.InvalidPriceException;
+import com.kodilla.ecommercee.exception.NullPriceException;
+import com.kodilla.ecommercee.exception.OrderNotFoundException;
 import com.kodilla.ecommercee.mapper.OrderMapper;
-import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.OrderRepository;
-import com.kodilla.ecommercee.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,19 +15,16 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static com.kodilla.ecommercee.entity.enums.OrderStatus.PAID;
-import static com.kodilla.ecommercee.entity.enums.OrderStatus.UNPAID;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
-    private final CartRepository cartRepository;
     private final OrderMapper orderMapper;
 
     public List<OrderResponse> getAllOrders() {
         List<Order> orders = orderRepository.findAll();
-        return orders.stream().map(orderMapper::toOrderResponse).toList();
+        return orderMapper.mapToOrderResponseList(orders);
     }
 
     public OrderResponse getOrder(Long id) {
@@ -49,7 +38,7 @@ public class OrderService {
                 .orElseThrow(() -> new OrderNotFoundException(updateOrderRequest.id()));
 
         if (updateOrderRequest.totalPrice() == null) {
-            throw new InvalidPriceException();
+            throw new NullPriceException();
         }
 
         BigDecimal cartTotalPrice = order.getCart().getTotalProductPrice();
@@ -62,23 +51,7 @@ public class OrderService {
         if(updateOrderRequest.totalPrice().compareTo(cartTotalPrice) >= 0)
             order.setStatus(PAID);
 
-        Order updatedOrder = orderRepository.save(order);
-        return orderMapper.toOrderResponse(updatedOrder);
-    }
-
-    public OrderResponse createOrder(CreateOrderRequest createOrderRequest) {
-        User user = userRepository.findById(createOrderRequest.userId())
-                .orElseThrow(() -> new UserNotFoundException(createOrderRequest.userId()));
-        Cart cart = cartRepository.findById(createOrderRequest.cartId())
-                .orElseThrow(() -> new CartNotFoundException(createOrderRequest.cartId()));
-
-        BigDecimal totalPrice = cart.getTotalProductPrice();
-        String shippingAddress = user.getAddress();
-        OrderStatus status = UNPAID;
-
-        Order order = new Order(totalPrice, shippingAddress, status, user, cart);
-        Order createdOrder = orderRepository.save(order);
-        return orderMapper.toOrderResponse(createdOrder);
+        return orderMapper.toOrderResponse(orderRepository.save(order));
     }
 
     public void deleteOrder(Long id) {
