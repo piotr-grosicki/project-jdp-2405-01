@@ -3,15 +3,13 @@ package com.kodilla.ecommercee.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "CART_ITEM")
+@Table(name = "CART_ITEMS")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 public class CartItem {
 
     @Id
