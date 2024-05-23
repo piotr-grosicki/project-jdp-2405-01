@@ -25,7 +25,7 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Object> handlesUserNotFoundException(UserNotFoundException userNotFoundException) {
+    public ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException userNotFoundException) {
         return new ResponseEntity<>(userNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
@@ -35,7 +35,7 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<Object> handleProductException(ProductNotFoundException productNotFoundException) {
+    public ResponseEntity<Object> handleProductNotFoundException(ProductNotFoundException productNotFoundException) {
         return new ResponseEntity<>(productNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
@@ -43,7 +43,6 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleNegativeValueException(NegativeValuesException negativeValuesException){
         return new ResponseEntity<>("Negative value is not allowed",HttpStatus.BAD_REQUEST);
     }
-
 
     @ExceptionHandler(GroupHasProductsException.class)
     public ResponseEntity<Object> handleGroupHasProductsException(GroupHasProductsException groupHasProductsException) {
@@ -53,5 +52,10 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(GroupNotFoundException.class)
     public ResponseEntity<Object> handleGroupNotFoundException(GroupNotFoundException groupNotFoundException) {
         return new ResponseEntity<>(groupNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CartNotFoundException.class)
+    public ResponseEntity<Object> handleCartNotFoundException(CartNotFoundException cartNotFoundException) {
+        return new ResponseEntity<>(cartNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

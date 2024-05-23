@@ -3,45 +3,50 @@ package com.kodilla.ecommercee.controller;
 import com.kodilla.ecommercee.dto.request.AddProductToCartRequest;
 import com.kodilla.ecommercee.dto.request.CreateCartRequest;
 import com.kodilla.ecommercee.dto.request.RemoveProductFromCartRequest;
+import com.kodilla.ecommercee.dto.response.CartItemResponse;
 import com.kodilla.ecommercee.dto.response.CartResponse;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
 import com.kodilla.ecommercee.dto.response.ProductResponse;
-import com.kodilla.ecommercee.entity.Group;
+import com.kodilla.ecommercee.exception.CartNotFoundException;
+import com.kodilla.ecommercee.exception.ProductNotFoundException;
+import com.kodilla.ecommercee.exception.UserNotFoundException;
+import com.kodilla.ecommercee.service.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("shop/v1/cart")
 public class CartController {
 
+    private final CartService cartService;
+
     @GetMapping("{cartId}")
-    public ResponseEntity<List<ProductResponse>> getAllProductsFromCart(@PathVariable Long cartId) {
-        return ResponseEntity.ok(List.of(new ProductResponse(1L, "product", "description", BigDecimal.ZERO, 0, new Group("group 1"))));
+    public ResponseEntity<List<CartItemResponse>> getAllProductsFromCart(@PathVariable Long cartId) throws CartNotFoundException {
+        return ResponseEntity.ok(cartService.getCart(cartId).productResponses());
     }
 
     @PostMapping
-    public ResponseEntity<CartResponse> createCart(@RequestBody CreateCartRequest createCartRequest) {
-        return ResponseEntity.ok(new CartResponse(createCartRequest.userId(), new ArrayList<>(), null, null));
+    public ResponseEntity<CartResponse> createCart(@RequestBody CreateCartRequest createCartRequest) throws UserNotFoundException {
+        return ResponseEntity.ok(cartService.createEmptyCart(createCartRequest));
     }
 
     @PutMapping("/item")
-    public ResponseEntity<CartResponse> addProductToCart(@RequestBody AddProductToCartRequest addProductToCartRequest) {
-        return ResponseEntity.ok(new CartResponse(1L, new ArrayList<>(), addProductToCartRequest.quantity(), addProductToCartRequest.price()));
+    public ResponseEntity<CartResponse> addProductToCart(@RequestBody AddProductToCartRequest addProductToCartRequest) throws CartNotFoundException, ProductNotFoundException {
+        return ResponseEntity.ok(cartService.addProductToCart(addProductToCartRequest));
     }
 
     @PostMapping("/{cartId}")
-    public ResponseEntity<OrderResponse> createOrderFromCart(@PathVariable Long cartId) {
-        return ResponseEntity.ok(new OrderResponse(1L, cartId, 1L, BigDecimal.ZERO, "SEND"));
-
+    public ResponseEntity<OrderResponse> createOrderFromCart(@PathVariable Long cartId) throws CartNotFoundException {
+        return ResponseEntity.ok(cartService.createOrderFromCart(cartId));
     }
 
     @DeleteMapping
-    public ResponseEntity<ProductResponse> deleteProductFromCart(@RequestBody RemoveProductFromCartRequest removeProductFromCartRequest) {
-        return ResponseEntity.ok(new ProductResponse(removeProductFromCartRequest.productId(), "product name", "product description", BigDecimal.ZERO, 0,new Group("group 1")));
+    public ResponseEntity<ProductResponse> deleteProductFromCart(@RequestBody RemoveProductFromCartRequest removeProductFromCartRequest) throws CartNotFoundException, ProductNotFoundException {
+        return ResponseEntity.ok(cartService.deleteProductFromCart(removeProductFromCartRequest));
     }
 
 }

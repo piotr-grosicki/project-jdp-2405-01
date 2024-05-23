@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -33,6 +34,9 @@ public class Product {
 
     @Column(name = "QUANTITY")
     private Integer quantity = 0;
+
+    @OneToMany(mappedBy = "product")
+    private List<CartItem> cartItems;
 
     public Product(String name, String description, BigDecimal price, Integer quantity) {
         this.name = name;

@@ -1,7 +1,9 @@
 package com.kodilla.ecommercee.dto.response;
 
+import com.kodilla.ecommercee.entity.User;
+
 import java.math.BigDecimal;
 import java.util.List;
 
-public record CartResponse(Long id, List<ProductResponse> productResponses, Integer quantity, BigDecimal totalPrice) {
+public record CartResponse(Long id, List<CartItemResponse> productResponses, User user, BigDecimal totalPrice, Boolean isActive) {
 }

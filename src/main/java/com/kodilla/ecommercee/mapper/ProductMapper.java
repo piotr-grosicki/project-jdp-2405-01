@@ -18,6 +18,7 @@ public class ProductMapper {
                 product.getQuantity(),
                 product.getGroup());
     }
+
     public List<ProductResponse> mapToProductListResponse(List<Product> productList) {
         return productList.stream()
                 .map(this::mapToProductResponse)

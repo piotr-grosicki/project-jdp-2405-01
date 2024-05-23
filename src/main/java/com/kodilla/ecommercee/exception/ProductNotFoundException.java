@@ -5,4 +5,3 @@ public class ProductNotFoundException extends Exception {
         super(String.format("Product with id: %d could not be found", id));
     }
 }
-
