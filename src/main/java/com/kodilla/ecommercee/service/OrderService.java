@@ -33,7 +33,7 @@ public class OrderService {
         return orderMapper.toOrderResponse(order);
     }
 
-    public OrderResponse updateOrder(UpdateOrderRequest updateOrderRequest) {
+    public OrderResponse updateOrder(UpdateOrderRequest updateOrderRequest) throws NullValueException {
         Order order = orderRepository.findById(updateOrderRequest.id())
                 .orElseThrow(() -> new OrderNotFoundException(updateOrderRequest.id()));
 
