@@ -2,34 +2,51 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.request.UpdateOrderRequest;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
+import com.kodilla.ecommercee.entity.enums.OrderStatus;
+import com.kodilla.ecommercee.exception.NullValueException;
+import com.kodilla.ecommercee.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("shop/v1/order")
 public class OrderController {
 
+    private final OrderService service;
+
+    @Autowired
+    public OrderController(OrderService service) {
+        this.service = service;
+    }
+
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getAllOrders() {
-        return ResponseEntity.ok(new ArrayList<>());
+        List<OrderResponse> orders = service.getAllOrders();
+        return ResponseEntity.ok(orders);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable Long id) {
-        return ResponseEntity.ok(new OrderResponse(id, 2L, 3L, new BigDecimal("9.99"), true));
+        return ResponseEntity.ok(service.getOrder(id));
     }
 
     @PutMapping
-    public ResponseEntity<OrderResponse> updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) {
-        return ResponseEntity.ok(new OrderResponse(1L, 2L, 3L, new BigDecimal("11.99"), true));
+    public ResponseEntity<String> updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) {
+        try {
+            OrderResponse orderResponse = service.updateOrder(updateOrderRequest);
+            String message = orderResponse.status() == OrderStatus.PAID ? "Order paid" : "Order unpaid";
+            return ResponseEntity.ok(message);
+        } catch (NullValueException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<OrderResponse> deleteOrder(@PathVariable Long id) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        service.deleteOrder(id);
+        return ResponseEntity.noContent().build();
     }
 }

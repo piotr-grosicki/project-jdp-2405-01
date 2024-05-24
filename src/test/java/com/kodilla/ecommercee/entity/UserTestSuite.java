@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.entity;
 
+import com.kodilla.ecommercee.entity.enums.OrderStatus;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.OrderRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
@@ -83,8 +84,8 @@ public class UserTestSuite {
         cart2.setUser(user2);
         cartRepository.save(cart2);
 
-        Order order1 = new Order(new BigDecimal(100),"ShippingAddress 1",false,user2,cart1);
-        Order order2 = new Order(new BigDecimal(200),"ShippingAddress 2",true,user2,cart2);
+        Order order1 = new Order(new BigDecimal(100),"ShippingAddress 1", OrderStatus.UNPAID,user2,cart1);
+        Order order2 = new Order(new BigDecimal(200),"ShippingAddress 2",OrderStatus.UNPAID,user2,cart2);
         orderRepository.save(order1);
         orderRepository.save(order2);
 
@@ -117,7 +118,7 @@ public class UserTestSuite {
         Cart cart2 = new Cart();
         cart2.setUser(user);
 
-        Order order1 = new Order(new BigDecimal(100),"ShippingAddress 1",false,user,cart1);
+        Order order1 = new Order(new BigDecimal(100),"ShippingAddress 1",OrderStatus.UNPAID,user,cart1);
 
         //when
         userRepository.save(user);
@@ -150,9 +151,9 @@ public class UserTestSuite {
         cart3.setUser(user);
         cartRepository.save(cart3);
 
-        Order order1 = new Order(new BigDecimal(100),"ShippingAddress 1",false,user,cart1);
-        Order order2 = new Order(new BigDecimal(200),"ShippingAddress 2",true,user,cart2);
-        Order order3 = new Order(new BigDecimal(300),"ShippingAddress 3",false,user,cart3);
+        Order order1 = new Order(new BigDecimal(100),"ShippingAddress 1",OrderStatus.UNPAID,user,cart1);
+        Order order2 = new Order(new BigDecimal(200),"ShippingAddress 2",OrderStatus.PAID,user,cart2);
+        Order order3 = new Order(new BigDecimal(300),"ShippingAddress 3",OrderStatus.UNPAID,user,cart3);
         orderRepository.save(order1);
         orderRepository.save(order2);
 
