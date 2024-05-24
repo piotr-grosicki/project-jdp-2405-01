@@ -28,8 +28,8 @@ public class GlobalHttpErrorHandler {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NullPriceException.class)
-    public ResponseEntity<Object> handleNullPriceException(NullPriceException exception) {
+    @ExceptionHandler(NullValueException.class)
+    public ResponseEntity<Object> handleNullPriceException(NullValueException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

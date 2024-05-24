@@ -4,7 +4,7 @@ import com.kodilla.ecommercee.dto.request.UpdateOrderRequest;
 import com.kodilla.ecommercee.dto.response.OrderResponse;
 import com.kodilla.ecommercee.entity.Order;
 import com.kodilla.ecommercee.exception.NotEnoughPriceException;
-import com.kodilla.ecommercee.exception.NullPriceException;
+import com.kodilla.ecommercee.exception.NullValueException;
 import com.kodilla.ecommercee.exception.OrderNotFoundException;
 import com.kodilla.ecommercee.mapper.OrderMapper;
 import com.kodilla.ecommercee.repository.OrderRepository;
@@ -38,7 +38,7 @@ public class OrderService {
                 .orElseThrow(() -> new OrderNotFoundException(updateOrderRequest.id()));
 
         if (updateOrderRequest.totalPrice() == null) {
-            throw new NullPriceException();
+            throw new NullValueException();
         }
 
         BigDecimal cartTotalPrice = order.getCart().getTotalProductPrice();
@@ -46,10 +46,12 @@ public class OrderService {
             throw new NotEnoughPriceException();
         }
 
-        order.setTotalPrice(updateOrderRequest.totalPrice());
-        order.setShippingAddress(updateOrderRequest.shippingAddress());
+
         if(updateOrderRequest.totalPrice().compareTo(cartTotalPrice) >= 0)
             order.setStatus(PAID);
+
+        if (updateOrderRequest.shippingAddress() != null && !updateOrderRequest.shippingAddress().isEmpty())
+            order.setShippingAddress(updateOrderRequest.shippingAddress());
 
         return orderMapper.toOrderResponse(orderRepository.save(order));
     }
