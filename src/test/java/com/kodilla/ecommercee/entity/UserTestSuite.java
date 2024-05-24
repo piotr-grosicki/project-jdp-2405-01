@@ -1,6 +1,5 @@
 package com.kodilla.ecommercee.entity;
 
-import com.kodilla.ecommercee.entity.enums.OrderStatus;
 import com.kodilla.ecommercee.repository.CartRepository;
 import com.kodilla.ecommercee.repository.OrderRepository;
 import com.kodilla.ecommercee.repository.UserRepository;
@@ -9,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static com.kodilla.ecommercee.entity.enums.OrderStatus.PAID;
-import static com.kodilla.ecommercee.entity.enums.OrderStatus.UNPAID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,18 +35,9 @@ public class UserTestSuite {
     @Test
     void shouldGetAllUsers() {
         //given
-        User user1 = new User();
-        user1.setUsername("Username 1");
-        user1.setPassword("Password 1");
-        user1.setAddress("Address 1");
-        User user2 = new User();
-        user2.setUsername("Username 2");
-        user2.setPassword("Password 2");
-        user2.setAddress("Address 2");
-        User user3 = new User();
-        user3.setUsername("Username 3");
-        user3.setPassword("Password 3");
-        user3.setAddress("Address 3");
+        User user1 = new User("Username 1","Password 1","Address 1");
+        User user2 = new User("Username 2","Password 2","Address 2");
+        User user3 = new User("Username 3","Password 3","Address 3");
         userRepository.save(user1);
         userRepository.save(user2);
         userRepository.save(user3);
@@ -64,14 +52,8 @@ public class UserTestSuite {
     @Test
     void shouldGetUserById() {
         //given
-        User user1 = new User();
-        user1.setUsername("Username 1");
-        user1.setPassword("Password 1");
-        user1.setAddress("Address 1");
-        User user2 = new User();
-        user2.setUsername("Username 2");
-        user2.setPassword("Password 2");
-        user2.setAddress("Address 2");
+        User user1 = new User("Username 1","Password 1","Address 1");
+        User user2 = new User("Username 2","Password 2","Address 2");
         userRepository.save(user1);
         userRepository.save(user2);
 
@@ -87,18 +69,9 @@ public class UserTestSuite {
     @Test
     void shouldDeleteUser() {
         //given
-        User user1 = new User();
-        user1.setUsername("Username 1");
-        user1.setPassword("Password 1");
-        user1.setAddress("Address 1");
-        User user2 = new User();
-        user2.setUsername("Username 2");
-        user2.setPassword("Password 2");
-        user2.setAddress("Address 2");
-        User user3 = new User();
-        user3.setUsername("Username 3");
-        user3.setPassword("Password 3");
-        user3.setAddress("Address 3");
+        User user1 = new User("Username 1","Password 1","Address 1");
+        User user2 = new User("Username 2","Password 2","Address 2");
+        User user3 = new User("Username 3","Password 3","Address 3");
         userRepository.save(user1);
         userRepository.save(user2);
         userRepository.save(user3);
@@ -110,16 +83,8 @@ public class UserTestSuite {
         cart2.setUser(user2);
         cartRepository.save(cart2);
 
-        Order order1 = new Order();
-        Order order2 = new Order();
-        order1.setUser(user2);
-        order1.setShippingAddress("ShippingAddress 1");
-        order1.setTotalPrice(new BigDecimal(100));
-        order1.setStatus(UNPAID);
-        order2.setUser(user2);
-        order2.setShippingAddress("ShippingAddress 2");
-        order2.setTotalPrice(new BigDecimal(200));
-        order2.setStatus(PAID);
+        Order order1 = new Order(new BigDecimal(100),"ShippingAddress 1",false,user2,cart1);
+        Order order2 = new Order(new BigDecimal(200),"ShippingAddress 2",true,user2,cart2);
         orderRepository.save(order1);
         orderRepository.save(order2);
 
@@ -145,21 +110,14 @@ public class UserTestSuite {
     @Test
     void shouldCreateUser() {
         //given
-        User user = new User();
-        user.setUsername("New username");
-        user.setPassword("New password");
-        user.setAddress("New address");
+        User user = new User("New username","New password","New address");
 
         Cart cart1 = new Cart();
         cart1.setUser(user);
         Cart cart2 = new Cart();
         cart2.setUser(user);
 
-        Order order1 = new Order();
-        order1.setUser(user);
-        order1.setShippingAddress("ShippingAddress 2");
-        order1.setTotalPrice(new BigDecimal(100));
-        order1.setStatus(UNPAID);
+        Order order1 = new Order(new BigDecimal(100),"ShippingAddress 1",false,user,cart1);
 
         //when
         userRepository.save(user);
@@ -179,35 +137,26 @@ public class UserTestSuite {
     @Test
     void shouldUpdateUser() {
         //given
-        User user = new User();
-        user.setUsername("New username");
-        user.setPassword("New password");
-        user.setAddress("New address");
+        User user = new User("New username","New password","New address");
         userRepository.save(user);
 
-        Cart cart = new Cart();
-        cart.setUser(user);
-        cartRepository.save(cart);
+        Cart cart1 = new Cart();
+        cart1.setUser(user);
+        cartRepository.save(cart1);
+        Cart cart2 = new Cart();
+        cart2.setUser(user);
+        cartRepository.save(cart2);
+        Cart cart3 = new Cart();
+        cart3.setUser(user);
+        cartRepository.save(cart3);
 
-        Order order1 = new Order();
-        Order order2 = new Order();
-        Order order3 = new Order();
-        order1.setUser(user);
-        order1.setShippingAddress("ShippingAddress 1");
-        order1.setTotalPrice(new BigDecimal(100));
-        order1.setStatus(UNPAID);
-        order2.setUser(user);
-        order2.setShippingAddress("ShippingAddress 2");
-        order2.setTotalPrice(new BigDecimal(200));
-        order2.setStatus(PAID);
+        Order order1 = new Order(new BigDecimal(100),"ShippingAddress 1",false,user,cart1);
+        Order order2 = new Order(new BigDecimal(200),"ShippingAddress 2",true,user,cart2);
+        Order order3 = new Order(new BigDecimal(300),"ShippingAddress 3",false,user,cart3);
         orderRepository.save(order1);
         orderRepository.save(order2);
-        order3.setShippingAddress("ShippingAddress 3");
-        order3.setTotalPrice(new BigDecimal(300));
-        order3.setStatus(UNPAID);
 
         //when
-        order3.setUser(user);
         orderRepository.save(order3);
         user.setPassword("Updated password");
         userRepository.save(user);
