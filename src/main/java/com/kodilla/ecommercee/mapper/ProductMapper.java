@@ -16,7 +16,7 @@ public class ProductMapper {
                 product.getDescription(),
                 product.getPrice(),
                 product.getQuantity(),
-                product.getGroup());
+                product.getGroup().getName());
     }
 
     public List<ProductResponse> mapToProductListResponse(List<Product> productList) {
