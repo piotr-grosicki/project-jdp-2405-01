@@ -1,18 +1,13 @@
 package com.kodilla.ecommercee.mapper;
 
 import com.kodilla.ecommercee.dto.response.GroupResponse;
-import com.kodilla.ecommercee.dto.response.ProductResponse;
 import com.kodilla.ecommercee.entity.Group;
 import com.kodilla.ecommercee.entity.Product;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class GroupMapper {
 
 
