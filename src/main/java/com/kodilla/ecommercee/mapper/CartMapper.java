@@ -2,20 +2,22 @@ package com.kodilla.ecommercee.mapper;
 
 import com.kodilla.ecommercee.dto.response.CartResponse;
 import com.kodilla.ecommercee.entity.Cart;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CartMapper {
 
-    private CartItemMapper cartItemMapper;
+    private final CartItemMapper cartItemMapper;
 
     public CartResponse mapToCartResponse(Cart cart) {
         return new CartResponse(
                 cart.getId(),
                 cart.getCartItems().stream().map(cartItemMapper::mapToCartItemResponse).toList(),
-                cart.getUser(),
+                cart.getUser().getId(),
                 cart.getTotalProductPrice(),
                 cart.getIsActive()
         );

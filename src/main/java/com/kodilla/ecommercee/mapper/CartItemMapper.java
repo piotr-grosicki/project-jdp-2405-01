@@ -10,9 +10,9 @@ public class CartItemMapper {
     public CartItemResponse mapToCartItemResponse(CartItem cartItem) {
         return new CartItemResponse(
                 cartItem.getId(),
-                cartItem.getProduct(),
+                cartItem.getProduct().getId(),
                 cartItem.getQuantity(),
-                cartItem.getCart()
+                cartItem.getCart().getId()
         );
     }
 }
