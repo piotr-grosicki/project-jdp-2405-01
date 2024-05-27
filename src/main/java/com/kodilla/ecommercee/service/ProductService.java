@@ -35,54 +35,55 @@ public class ProductService {
         return productMapper.mapToProductResponse(product);
     }
 
-    public ProductResponse addProduct(CreateProductRequest createProductRequest) throws GroupNotFoundException, NullValueException,NegativeValuesException {
-        groupRepository.findById(createProductRequest.group().getId()).orElseThrow(() -> new GroupNotFoundException(createProductRequest.group().getId()));
+    public ProductResponse addProduct(CreateProductRequest createProductRequest) throws GroupNotFoundException, NullValueException, NegativeValuesException {
+        Group group = groupRepository.findById(createProductRequest.groupId()).orElseThrow(() -> new GroupNotFoundException(createProductRequest.groupId()));
+
         if (createProductRequest.name() == null || createProductRequest.description() == null ||
                 createProductRequest.price() == null || createProductRequest.quantity() == null) {
             throw new NullValueException();
         }
-        if(createProductRequest.price().signum() < 0 || createProductRequest.quantity() < 0){
+        if (createProductRequest.price().signum() < 0 || createProductRequest.quantity() < 0) {
             throw new NegativeValuesException();
         }
 
-        Product product = new Product(createProductRequest.name(), createProductRequest.description(), createProductRequest.price(), createProductRequest.quantity(), createProductRequest.group());
+        Product product = new Product(createProductRequest.name(), createProductRequest.description(), createProductRequest.price(), createProductRequest.quantity(), group);
         productRepository.save(product);
         return productMapper.mapToProductResponse(product);
     }
 
-    public ProductResponse updateProduct(UpdateProductRequest updateProductRequest) throws ProductNotFoundException,GroupNotFoundException, NullValueException,NegativeValuesException {
+    public ProductResponse updateProduct(UpdateProductRequest updateProductRequest) throws ProductNotFoundException, GroupNotFoundException, NullValueException, NegativeValuesException {
         Product product = productRepository.findById(updateProductRequest.id()).orElseThrow(() -> new ProductNotFoundException(updateProductRequest.id()));
-        groupRepository.findById(updateProductRequest.group().getId()).orElseThrow(() -> new GroupNotFoundException(updateProductRequest.group().getId()));
+        Group group = groupRepository.findById(updateProductRequest.groupId()).orElseThrow(() -> new GroupNotFoundException(updateProductRequest.groupId()));
         boolean updated = false;
 
         if (updateProductRequest.name() == null || updateProductRequest.description() == null ||
                 updateProductRequest.price() == null || updateProductRequest.quantity() == null) {
             throw new NullValueException();
         }
-        if(updateProductRequest.price().signum() < 0 || updateProductRequest.quantity() < 0){
+        if (updateProductRequest.price().signum() < 0 || updateProductRequest.quantity() < 0) {
             throw new NegativeValuesException();
         }
-        if(!updateProductRequest.name().equals(product.getName())) {
+        if (!updateProductRequest.name().equals(product.getName())) {
             product.setName(updateProductRequest.name());
             updated = true;
         }
-        if(!updateProductRequest.description().equals(product.getDescription())) {
+        if (!updateProductRequest.description().equals(product.getDescription())) {
             product.setDescription(updateProductRequest.description());
             updated = true;
         }
-        if(!updateProductRequest.price().equals(product.getPrice())){
-        product.setPrice(updateProductRequest.price());
+        if (!updateProductRequest.price().equals(product.getPrice())) {
+            product.setPrice(updateProductRequest.price());
             updated = true;
         }
-        if(!updateProductRequest.quantity().equals(product.getQuantity())){
+        if (!updateProductRequest.quantity().equals(product.getQuantity())) {
             product.setQuantity(updateProductRequest.quantity());
             updated = true;
         }
-        if(!updateProductRequest.group().equals(product.getGroup())){
-            product.setGroup(updateProductRequest.group());
+        if (!group.equals(product.getGroup())) {
+            product.setGroup(group);
             updated = true;
         }
-        if(updated) {
+        if (updated) {
             productRepository.save(product);
         }
         return productMapper.mapToProductResponse(product);

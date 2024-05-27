@@ -40,8 +40,8 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(NegativeValuesException.class)
-    public ResponseEntity<Object> handleNegativeValueException(NegativeValuesException negativeValuesException){
-        return new ResponseEntity<>("Negative value is not allowed",HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> handleNegativeValueException(NegativeValuesException negativeValuesException) {
+        return new ResponseEntity<>(negativeValuesException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(GroupHasProductsException.class)
@@ -58,8 +58,8 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleCartNotFoundException(CartNotFoundException cartNotFoundException) {
         return new ResponseEntity<>(cartNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
     }
-  
-      @ExceptionHandler(OrderNotFoundException.class)
+
+    @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<Object> handleOrderNotFoundException(OrderNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
@@ -69,8 +69,8 @@ public class GlobalHttpErrorHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleOtherExceptions(Exception exception) {
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<Object> handleInvalidTokenException(InvalidTokenException invalidTokenException) {
+        return new ResponseEntity<>(invalidTokenException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
