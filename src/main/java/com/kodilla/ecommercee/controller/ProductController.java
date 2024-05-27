@@ -9,7 +9,6 @@ import com.kodilla.ecommercee.exception.NullValueException;
 import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("shop/v1/product")
 @RequiredArgsConstructor
-//@EnableAspectJAutoProxy
 public class ProductController {
 
     private final ProductService productService;

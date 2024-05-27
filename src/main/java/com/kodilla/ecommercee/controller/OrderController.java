@@ -6,7 +6,6 @@ import com.kodilla.ecommercee.entity.enums.OrderStatus;
 import com.kodilla.ecommercee.exception.NullValueException;
 import com.kodilla.ecommercee.service.OrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("shop/v1/order")
 @RequiredArgsConstructor
-//@EnableAspectJAutoProxy
 public class OrderController {
 
     private final OrderService service;

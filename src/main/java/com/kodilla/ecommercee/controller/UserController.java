@@ -2,14 +2,13 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.request.CreateUserRequest;
 import com.kodilla.ecommercee.dto.request.LockUserRequest;
-import com.kodilla.ecommercee.dto.request.UserCredentialsRequest;
 import com.kodilla.ecommercee.dto.request.UpdateUserRequest;
-import com.kodilla.ecommercee.dto.response.UserResponse;
+import com.kodilla.ecommercee.dto.request.UserCredentialsRequest;
 import com.kodilla.ecommercee.dto.response.UserLockedResponse;
+import com.kodilla.ecommercee.dto.response.UserResponse;
 import com.kodilla.ecommercee.exception.*;
 import com.kodilla.ecommercee.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("shop/v1/user")
 @RequiredArgsConstructor
-@EnableAspectJAutoProxy
 public class UserController {
 
     private final UserService userService;
