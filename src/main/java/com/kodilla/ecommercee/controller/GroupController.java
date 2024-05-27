@@ -20,27 +20,27 @@ public class GroupController {
     private final GroupService groupService;
 
     @GetMapping
-    public ResponseEntity<List<GroupResponse>> getAllGroups() {
+    public ResponseEntity<List<GroupResponse>> getAllGroups(@RequestParam Integer token) {
         return ResponseEntity.ok(groupService.getAllGroups());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GroupResponse> getGroup(@PathVariable Long id) throws GroupNotFoundException {
+    public ResponseEntity<GroupResponse> getGroup(@PathVariable Long id, @RequestParam Integer token) throws GroupNotFoundException {
         return ResponseEntity.ok(groupService.getGroup(id));
     }
 
     @PostMapping
-    public ResponseEntity<GroupResponse> createGroup(@RequestBody CreateGroupRequest createGroupRequest) {
+    public ResponseEntity<GroupResponse> createGroup(@RequestBody CreateGroupRequest createGroupRequest, @RequestParam Integer token) {
         return ResponseEntity.ok(groupService.addGroup(createGroupRequest));
     }
 
     @PutMapping
-    public ResponseEntity<GroupResponse> updateGroup(@RequestBody UpdateGroupRequest updateGroupRequest) throws GroupNotFoundException {
+    public ResponseEntity<GroupResponse> updateGroup(@RequestBody UpdateGroupRequest updateGroupRequest, @RequestParam Integer token) throws GroupNotFoundException {
         return ResponseEntity.ok(groupService.updateGroup(updateGroupRequest));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGroup(@PathVariable Long id) throws GroupNotFoundException, GroupHasProductsException {
+    public ResponseEntity<Void> deleteGroup(@PathVariable Long id, @RequestParam Integer token) throws GroupNotFoundException, GroupHasProductsException {
         groupService.deleteGroup(id);
         return ResponseEntity.noContent().build();
     }
