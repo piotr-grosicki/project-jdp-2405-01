@@ -22,14 +22,14 @@ public class Cart {
     private Long id;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<CartItem> cartItems = new ArrayList<CartItem>();
+    private List<CartItem> cartItems;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
 
     @Column(name = "TOTAL_PRODUCT_PRICE")
-    private BigDecimal totalProductPrice;
+    private BigDecimal totalProductPrice = BigDecimal.ZERO;
 
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
@@ -43,5 +43,7 @@ public class Cart {
 
     public Cart(User user) {
         this.user = user;
+        cartItems = new ArrayList<>();
+        this.isActive = true;
     }
 }
