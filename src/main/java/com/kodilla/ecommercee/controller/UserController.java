@@ -8,6 +8,7 @@ import com.kodilla.ecommercee.dto.response.UserLockedResponse;
 import com.kodilla.ecommercee.dto.response.UserResponse;
 import com.kodilla.ecommercee.exception.*;
 import com.kodilla.ecommercee.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,12 +43,12 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserRequest updateUserRequest, @RequestParam Integer token) throws UserNotFoundException, UsernameAlreadyExistsException, NullValueException {
+    public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UpdateUserRequest updateUserRequest, @RequestParam Integer token) throws UserNotFoundException, UsernameAlreadyExistsException, NullValueException {
         return ResponseEntity.ok(userService.updateUser(updateUserRequest));
     }
 
     @PutMapping("/lock")
-    public ResponseEntity<UserLockedResponse> lockUser(@RequestBody LockUserRequest lockUserRequest, @RequestParam Integer token) throws UserNotFoundException, NullValueException {
+    public ResponseEntity<UserLockedResponse> lockUser(@Valid @RequestBody LockUserRequest lockUserRequest, @RequestParam Integer token) throws UserNotFoundException, NullValueException {
         return ResponseEntity.ok(userService.lockUser(lockUserRequest));
     }
 

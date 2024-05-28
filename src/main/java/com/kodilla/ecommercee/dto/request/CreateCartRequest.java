@@ -1,4 +1,7 @@
 package com.kodilla.ecommercee.dto.request;
 
-public record CreateCartRequest(Long userId) {
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+
+public record CreateCartRequest(@Valid @NotNull Long userId) {
 }

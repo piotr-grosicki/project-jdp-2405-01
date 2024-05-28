@@ -6,6 +6,7 @@ import com.kodilla.ecommercee.dto.response.GroupResponse;
 import com.kodilla.ecommercee.exception.GroupHasProductsException;
 import com.kodilla.ecommercee.exception.GroupNotFoundException;
 import com.kodilla.ecommercee.service.GroupService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class GroupController {
     }
 
     @PutMapping
-    public ResponseEntity<GroupResponse> updateGroup(@RequestBody UpdateGroupRequest updateGroupRequest, @RequestParam Integer token) throws GroupNotFoundException {
+    public ResponseEntity<GroupResponse> updateGroup(@Valid @RequestBody UpdateGroupRequest updateGroupRequest, @RequestParam Integer token) throws GroupNotFoundException {
         return ResponseEntity.ok(groupService.updateGroup(updateGroupRequest));
     }
 

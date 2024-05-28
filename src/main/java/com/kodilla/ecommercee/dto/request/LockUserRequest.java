@@ -1,4 +1,7 @@
 package com.kodilla.ecommercee.dto.request;
 
-public record LockUserRequest(Long userId, String username, String password) {
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+
+public record LockUserRequest(@Valid @NotNull Long userId, String username, String password) {
 }

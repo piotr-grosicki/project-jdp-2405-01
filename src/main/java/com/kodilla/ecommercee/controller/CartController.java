@@ -11,6 +11,7 @@ import com.kodilla.ecommercee.exception.CartNotFoundException;
 import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.exception.UserNotFoundException;
 import com.kodilla.ecommercee.service.CartService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +31,12 @@ public class CartController {
     }
 
     @PostMapping
-    public ResponseEntity<CartResponse> createCart(@RequestBody CreateCartRequest createCartRequest, @RequestParam Integer token) throws UserNotFoundException {
+    public ResponseEntity<CartResponse> createCart(@Valid @RequestBody CreateCartRequest createCartRequest, @RequestParam Integer token) throws UserNotFoundException {
         return ResponseEntity.ok(cartService.createEmptyCart(createCartRequest));
     }
 
     @PutMapping("/item")
-    public ResponseEntity<CartResponse> addProductToCart(@RequestBody AddProductToCartRequest addProductToCartRequest, @RequestParam Integer token) throws CartNotFoundException, ProductNotFoundException {
+    public ResponseEntity<CartResponse> addProductToCart(@Valid @RequestBody AddProductToCartRequest addProductToCartRequest, @RequestParam Integer token) throws CartNotFoundException, ProductNotFoundException {
         return ResponseEntity.ok(cartService.addProductToCart(addProductToCartRequest));
     }
 
@@ -45,7 +46,7 @@ public class CartController {
     }
 
     @DeleteMapping
-    public ResponseEntity<ProductResponse> deleteProductFromCart(@RequestBody RemoveProductFromCartRequest removeProductFromCartRequest, @RequestParam Integer token) throws CartNotFoundException, ProductNotFoundException {
+    public ResponseEntity<ProductResponse> deleteProductFromCart(@Valid @RequestBody RemoveProductFromCartRequest removeProductFromCartRequest, @RequestParam Integer token) throws CartNotFoundException, ProductNotFoundException {
         return ResponseEntity.ok(cartService.deleteProductFromCart(removeProductFromCartRequest));
     }
 

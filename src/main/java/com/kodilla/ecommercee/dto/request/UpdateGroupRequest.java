@@ -1,4 +1,7 @@
 package com.kodilla.ecommercee.dto.request;
 
-public record UpdateGroupRequest(Long id, String name) {
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+
+public record UpdateGroupRequest(@Valid @NotNull Long id, String name) {
 }

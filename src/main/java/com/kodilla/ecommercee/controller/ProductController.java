@@ -8,6 +8,7 @@ import com.kodilla.ecommercee.exception.NegativeValuesException;
 import com.kodilla.ecommercee.exception.NullValueException;
 import com.kodilla.ecommercee.exception.ProductNotFoundException;
 import com.kodilla.ecommercee.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +33,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@RequestBody CreateProductRequest createProductRequest, @RequestParam Integer token) throws GroupNotFoundException, NullValueException, NegativeValuesException {
+    public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody CreateProductRequest createProductRequest, @RequestParam Integer token) throws GroupNotFoundException, NullValueException, NegativeValuesException {
         return ResponseEntity.ok(productService.addProduct(createProductRequest));
     }
 
     @PutMapping
-    public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest updateProductRequest, @RequestParam Integer token) throws ProductNotFoundException, GroupNotFoundException, NullValueException, NegativeValuesException {
+    public ResponseEntity<ProductResponse> updateProduct(@Valid @RequestBody UpdateProductRequest updateProductRequest, @RequestParam Integer token) throws ProductNotFoundException, GroupNotFoundException, NullValueException, NegativeValuesException {
         return ResponseEntity.ok(productService.updateProduct(updateProductRequest));
     }
 

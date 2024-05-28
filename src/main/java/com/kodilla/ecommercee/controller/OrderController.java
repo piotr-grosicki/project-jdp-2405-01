@@ -5,6 +5,7 @@ import com.kodilla.ecommercee.dto.response.OrderResponse;
 import com.kodilla.ecommercee.entity.enums.OrderStatus;
 import com.kodilla.ecommercee.exception.NullValueException;
 import com.kodilla.ecommercee.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class OrderController {
     }
 
     @PutMapping
-    public ResponseEntity<String> updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest, @RequestParam Integer token) {
+    public ResponseEntity<String> updateOrder(@Valid @RequestBody UpdateOrderRequest updateOrderRequest, @RequestParam Integer token) {
         try {
             OrderResponse orderResponse = service.updateOrder(updateOrderRequest);
             String message = orderResponse.status() == OrderStatus.PAID ? "Order paid" : "Order unpaid";

@@ -23,7 +23,7 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
-
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'com.h2database:h2'
 }
