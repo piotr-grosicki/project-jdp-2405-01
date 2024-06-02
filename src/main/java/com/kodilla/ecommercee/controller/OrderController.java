@@ -29,13 +29,10 @@ public class OrderController {
     }
 
     @PutMapping
-    public ResponseEntity<String> updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) {
-        try {
+    public ResponseEntity<OrderResponse> updateOrder(@RequestBody UpdateOrderRequest updateOrderRequest) throws NullValueException {
             OrderResponse orderResponse = service.updateOrder(updateOrderRequest);
-            return ResponseEntity.ok().build();
-        } catch (NullValueException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+            return ResponseEntity.ok(orderResponse);
+
     }
 
     @DeleteMapping("/{id}")
